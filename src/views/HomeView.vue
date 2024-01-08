@@ -141,7 +141,8 @@ const moreRecipesToShow = computed(() => {
     <button @click="addRecipe">Ajouter une recette</button>
     <template #footer>
       <MyButton href="/test" variant="rounded">Connexion</MyButton>
-      <MyButton href="/montres" variant="rounded">Ajouter montre</MyButton>
+      <MyButton href="/montres" variant="rounded">Check montre</MyButton>
+      <MyButton href="/add-watch" variant="rounded">Ajouter montre</MyButton>
     </template>
   </DefaultLayout>
   <!-- <MyButton size="small" href="/about">My Small Button</MyButton>
