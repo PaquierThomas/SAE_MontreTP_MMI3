@@ -1,0 +1,23 @@
+<script setup></script>
+
+<template>
+  <DefaultLayout>
+    <template #header> Nouveau template </template>
+    <template #article> Nouvel article </template>
+    <template #footer> Nouveau footer </template>
+  </DefaultLayout>
+
+  <div class="about">
+    <h1>This is an about page</h1>
+  </div>
+</template>
+
+<style>
+@media (min-width: 1024px) {
+  .about {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+}
+</style>
