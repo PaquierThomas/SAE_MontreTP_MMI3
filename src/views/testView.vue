@@ -37,7 +37,7 @@ const login = async () => {
     // Traitement après la connexion réussie
     if (response.status === 200) {
       message.value = 'Connexion réussie !'
-      window.location.href = '/'
+      // window.location.href = '/'
     }
   } catch (error) {
     console.error('Erreur:', error)
