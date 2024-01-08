@@ -1,7 +1,6 @@
 <script setup>
 import MyButton from '@/components/elements/MyButton.vue'
 import DefaultLayout from '@/components/layouts/DefaultLayout.vue'
-import MyBackgroundScroll from '@/components/MyBackgroundScroll.vue'
 import MyCardFood from '@/components/elements/MyCardFood.vue'
 import { computed, onMounted, ref } from 'vue'
 import { client } from '../utils/axios'
@@ -140,9 +139,9 @@ const moreRecipesToShow = computed(() => {
     spaghettiRecipes : {{ spaghettiRecipes }} <br /><br />
     hasGoalId1 : {{ hasGoalId1 }} <br /><br />
     <button @click="addRecipe">Ajouter une recette</button>
-    <MyBackgroundScroll />
     <template #footer>
-      <MyButton href="/about" variant="rounded">My link Button</MyButton>
+      <MyButton href="/test" variant="rounded">Connexion</MyButton>
+      <MyButton href="/montres" variant="rounded">Ajouter montre</MyButton>
     </template>
   </DefaultLayout>
   <!-- <MyButton size="small" href="/about">My Small Button</MyButton>
