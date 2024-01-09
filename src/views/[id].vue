@@ -113,6 +113,7 @@
         </div>
 
         <button type="submit">Enregistrer</button>
+        <button @click="deleteMontre">Supprimer cette montre</button>
       </form>
     </div>
   </div>
@@ -158,6 +159,19 @@ export default {
         // Tu peux rediriger l'utilisateur ou faire d'autres actions après la mise à jour réussie
       } catch (error) {
         console.error('Erreur lors de la mise à jour de la configuration de la montre:', error)
+      }
+    },
+    async deleteMontre() {
+      try {
+        const configId = this.$route.params.configId
+        const response = await axios.delete(`http://localhost:4000/montres/${configId}`)
+        console.log(response.data) // Réponse du serveur après la suppression
+
+        // Rediriger l'utilisateur ou effectuer d'autres actions après la suppression réussie
+        this.$router.push('/montres')
+      } catch (error) {
+        console.error('Erreur lors de la suppression de la montre:', error)
+        // Gérer l'erreur, afficher un message à l'utilisateur, etc.
       }
     }
   }
