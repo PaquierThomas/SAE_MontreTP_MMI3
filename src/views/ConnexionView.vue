@@ -1,72 +1,30 @@
 <template>
   <div>
-    <h1>Inscription</h1>
-    <form @submit.prevent="inscrire">
-      <label>Nom d'utilisateur:</label>
-      <input v-model="inscriptionNom" required />
-
-      <label>Mot de passe:</label>
-      <input type="password" v-model="inscriptionMotDePasse" required />
-
-      <button type="submit">S'inscrire</button>
-    </form>
-
-    <h1>Connexion</h1>
-    <form @submit.prevent="connecter">
-      <label>Nom d'utilisateur:</label>
-      <input v-model="connexionNom" required />
-
-      <label>Mot de passe:</label>
-      <input type="password" v-model="connexionMotDePasse" required />
-
-      <button type="submit">Se connecter</button>
-    </form>
+    <SignUpForm @signup-success="handleSignUpSuccess" />
+    <LoginForm @login-success="handleLoginSuccess" />
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import SignUpForm from '../components/SignUpForm.vue'
+import LoginForm from '../components/LoginForm.vue'
 
 export default {
-  data() {
-    return {
-      inscriptionNom: '',
-      inscriptionMotDePasse: '',
-      connexionNom: '',
-      connexionMotDePasse: ''
-    }
+  components: {
+    SignUpForm,
+    LoginForm
   },
   methods: {
-    inscrire() {
-      axios
-        .post('http://localhost:4000/signup', {
-          NomUser: this.inscriptionNom,
-          MotDePasse: this.inscriptionMotDePasse
-        })
-        .then((response) => {
-          console.log('Inscription réussie, ID utilisateur:', response.data.UserID)
-        })
-        .catch((error) => {
-          console.error("Erreur lors de l'inscription", error)
-        })
+    handleSignUpSuccess(user_id) {
+      console.log('Inscription réussie, ID utilisateur:', user_id)
+      // Traiter la réussite de l'inscription ici si nécessaire
     },
-    connecter() {
-      axios
-        .post('http://localhost:4000/login', {
-          NomUser: this.connexionNom,
-          MotDePasse: this.connexionMotDePasse
-        })
-        .then((response) => {
-          console.log('Connexion réussie, ID utilisateur:', response.data.UserID)
-          // Stocker le token dans le stockage local
-          localStorage.setItem('token', response.data.token)
-        })
-        .catch((error) => {
-          console.error('Erreur lors de la connexion', error)
-        })
+    handleLoginSuccess(user_id, token) {
+      console.log('Connexion réussie, ID utilisateur:', user_id)
+      // Stocker le token dans le stockage local
+      localStorage.setItem('token', token)
+      // Traiter la réussite de la connexion ici si nécessaire
     }
   }
 }
 </script>
-
-<style></style>
