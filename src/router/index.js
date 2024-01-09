@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
+import axios from 'axios'
+import { authGuard } from '../utils/connexion.js'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -23,9 +26,9 @@ const router = createRouter({
       component: () => import('../views/RecipeView.vue')
     },
     {
-      path: '/test',
-      name: 'test',
-      component: () => import('../views/testView.vue')
+      path: '/connexion',
+      name: 'connexion',
+      component: () => import('../views/ConnexionView.vue')
     },
     {
       path: '/montres',
@@ -35,13 +38,16 @@ const router = createRouter({
     {
       path: '/montres/:configId',
       name: 'MontreDetails',
-      component: () => import('../views/[id].vue')
+      component: () => import('../views/[id].vue'),
+      beforeEnter: authGuard
     },
 
     {
       path: '/add-watch',
       name: 'addWatch',
-      component: () => import('../views/addWatchView.vue')
+      component: () => import('../views/addWatchView.vue'),
+      meta: { requiresAuth: true },
+      beforeEnter: authGuard
     }
   ]
 })
