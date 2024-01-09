@@ -20,7 +20,7 @@ import { client } from '../utils/axios'
     </template>
 
     <template #footer>
-      <MyButton href="/test" variant="rounded">Connexion</MyButton>
+      <MyButton href="/connexion" variant="rounded">Connexion</MyButton>
       <MyButton href="/montres" variant="rounded">Check montre</MyButton>
       <MyButton href="/add-watch" variant="rounded">Ajouter montre</MyButton>
     </template>

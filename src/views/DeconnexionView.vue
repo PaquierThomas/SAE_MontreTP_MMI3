@@ -1,24 +1,19 @@
 <template>
   <div>
-    <h1>Déconnections</h1>
-    <button @click="deconnecter">Se déconnecter</button>
-    <!-- Reste du contenu de la page -->
+    <!-- Votre contenu de page ici -->
+    <button @click="deconnecter">Déconnexion</button>
   </div>
 </template>
 
 <script>
-import { deconnecter } from '../utils/connexion.js'
-
 export default {
   methods: {
     deconnecter() {
-      deconnecter()
-      // Redirige l'utilisateur vers la page de connexion ou toute autre page appropriée
-      this.$router.push('/connexion')
+      // Efface le token du stockage local
+      localStorage.removeItem('token')
+      // Vous pouvez également effectuer d'autres actions nécessaires pour la déconnexion
+      // Redirection vers la page de connexion, etc.
     }
-    // Reste des méthodes du composant
   }
 }
 </script>
-
-<style></style>

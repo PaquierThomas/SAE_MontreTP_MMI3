@@ -2,6 +2,7 @@
   <div>
     <SignUpForm @signup-success="handleSignUpSuccess" />
     <LoginForm @login-success="handleLoginSuccess" />
+    <button @click="deconnecter">Déconnexion</button>
   </div>
 </template>
 
@@ -24,6 +25,12 @@ export default {
       // Stocker le token dans le stockage local
       localStorage.setItem('token', token)
       // Traiter la réussite de la connexion ici si nécessaire
+    },
+    deconnecter() {
+      // Efface le token du stockage local
+      localStorage.removeItem('token')
+      // Vous pouvez également effectuer d'autres actions nécessaires pour la déconnexion
+      // Redirection vers la page de connexion, etc.
     }
   }
 }
