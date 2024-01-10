@@ -48,6 +48,13 @@ const router = createRouter({
       component: () => import('../views/addWatchView.vue'),
       meta: { requiresAuth: true },
       beforeEnter: authGuard
+    },
+    {
+      path: '/panier',
+      name: 'panier',
+      component: () => import('../views/PanierView.vue'),
+      meta: { requiresAuth: true },
+      beforeEnter: authGuard
     }
   ]
 })
