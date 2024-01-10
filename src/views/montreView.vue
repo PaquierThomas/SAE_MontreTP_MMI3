@@ -23,7 +23,9 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      montres: []
+      montres: [],
+      user_id: '',
+      config_id: ''
     }
   },
   created() {
@@ -43,24 +45,22 @@ export default {
       console.log('Id de la montre', id)
       this.$router.push({ name: 'MontreDetails', params: { configId: id } })
     },
-    ajouterAuPanier(config_id, user_id) {
+    ajouterAuPanier(config_id) {
       const token = localStorage.getItem('token')
-      // Vérif utilisateur
+      const user_id = this.user_id // Remplacez cela par votre méthode de récupération de l'ID utilisateur
+
       if (!token) {
-        // Redirect utilisateur to connexion
         this.$router.push('/connexion')
         return
       }
+
       const headers = { Authorization: token }
-      // Envoyer la requête pour ajouter la montre au panier
+
       axios
         .post(
           'http://localhost:4000/panier/add',
-          {
-            user_id: user_id,
-            config_id: config_id
-          },
-          { headers: headers }
+          { config_id }, // Assurez-vous que config_id est défini et transmis correctement
+          { headers }
         )
         .then((response) => {
           console.log(response.data.message)

@@ -2,10 +2,13 @@
 import MyButton from '@/components/elements/MyButton.vue'
 import DefaultLayout from '@/components/layouts/DefaultLayout.vue'
 import MyCardFood from '@/components/elements/MyCardFood.vue'
+import Header from '@/components/header.vue'
+import Footer from '@/components/footer.vue'
 import { computed, onMounted, ref } from 'vue'
 import { client } from '../utils/axios'
 </script>
 <template>
+  <Header />
   <DefaultLayout>
     <template #header> </template>
     <template #aside>
@@ -25,6 +28,7 @@ import { client } from '../utils/axios'
       <MyButton href="/add-watch" variant="rounded">Ajouter montre</MyButton>
     </template>
   </DefaultLayout>
+  <Footer />
   <!-- <MyButton size="small" href="/about">My Small Button</MyButton>
   <MyButton href="/about">My link Button</MyButton>
   <MyButton variant="rounded" >My rounded Button</MyButton> -->
