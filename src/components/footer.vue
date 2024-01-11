@@ -10,10 +10,10 @@
               <a href="/" class="list-link">Accueil</a>
             </li>
             <li class="list-item">
-              <a href="/montre/new" class="list-link">Personnaliser</a>
+              <a href="/add-watch" class="list-link">Personnaliser</a>
             </li>
             <li class="list-item">
-              <a href="/montre" class="list-link">Vos montres</a>
+              <a href="/montres" class="list-link">Vos montres</a>
             </li>
             <li class="list-item">
               <a href="/connexion" class="list-link">Se connecter</a>

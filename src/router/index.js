@@ -55,6 +55,11 @@ const router = createRouter({
       component: () => import('../views/PanierView.vue'),
       meta: { requiresAuth: true },
       beforeEnter: authGuard
+    },
+    {
+      path: '/try',
+      name: 'try',
+      component: () => import('../views/TryView.vue')
     }
   ]
 })
