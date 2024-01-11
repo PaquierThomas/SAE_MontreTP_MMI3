@@ -1,36 +1,58 @@
-<script setup>
-import MyButton from '@/components/elements/MyButton.vue'
-import DefaultLayout from '@/components/layouts/DefaultLayout.vue'
-import MyCardFood from '@/components/elements/MyCardFood.vue'
-import Header from '@/components/header.vue'
-import Footer from '@/components/footer.vue'
-import { computed, onMounted, ref } from 'vue'
-import { client } from '../utils/axios'
-</script>
-<template>
+<template class="body">
   <Header />
-  <DefaultLayout>
-    <template #header> </template>
-    <template #aside>
-      <img style="max-width: 100px" src="@/assets/image-1.png" />
-      <nav>
-        <ul>
-          <li><a href="#">Aside link 1</a></li>
-          <li><a href="#">Aside link 2</a></li>
-          <li><a href="#">Aside link 3</a></li>
-        </ul>
-      </nav>
-    </template>
-
-    <template #footer>
-      <MyButton href="/connexion" variant="rounded">Connexion</MyButton>
-      <MyButton href="/montres" variant="rounded">Check montre</MyButton>
-      <MyButton href="/add-watch" variant="rounded">Ajouter montre</MyButton>
-    </template>
-  </DefaultLayout>
-  <Footer />
-  <!-- <MyButton size="small" href="/about">My Small Button</MyButton>
-  <MyButton href="/about">My link Button</MyButton>
-  <MyButton variant="rounded" >My rounded Button</MyButton> -->
-  <p></p>
+  <div class="flex">
+    <div class="left">
+      <H1>Élégance intemporelle, précision à chaque tik-tak.</H1>
+    </div>
+    <div class="right"></div>
+  </div>
+  <Footer class="footer" />
 </template>
+<script setup>
+import Footer from '../components/footer.vue'
+import Header from '../components/header.vue'
+</script>
+
+<style lang="scss" scoped>
+$color: white;
+body {
+  height: 100vh;
+}
+.flex {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+.left {
+  width: 55%;
+  height: 100%;
+  background-color: #000000;
+  border-top: 2px solid $color;
+  border-bottom: 2px solid $color;
+  border-right: 2px solid $color;
+}
+h1 {
+  font-size: 150px;
+  -webkit-text-stroke: 3px $color;
+  line-height: 1.1;
+  font-family: $primary-font-family;
+
+  font-weight: 700;
+  padding: 80px 0 80px 25px;
+  margin-left: 75px;
+
+  text-transform: uppercase;
+}
+
+.right {
+  background: black;
+  width: 45%;
+  border-top: 2px solid $color;
+  border-bottom: 2px solid $color;
+}
+
+.footer {
+  margin: 0;
+}
+</style>
+```

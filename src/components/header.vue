@@ -15,7 +15,7 @@
               <a href="/add-watch" class="menu-link">Personnaliser</a>
             </li>
             <li>
-              <a href="/montres" class="menu-link">Vos montres</a>
+              <a href="/montres" class="menu-link">Montres</a>
             </li>
             <li>
               <a href="/connexion" class="menu-link">Se connecter</a>
