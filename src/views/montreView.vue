@@ -117,6 +117,7 @@ export default {
   ); /* Définir la largeur minimale et maximale des colonnes */
   gap: 20px; /* Espacement entre les éléments de la grille */
 }
+
 /* Styles CSS pour la liste des montres */
 .montre {
   border: 1px solid #ccc;

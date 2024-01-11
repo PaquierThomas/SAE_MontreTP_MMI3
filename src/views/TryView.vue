@@ -1,167 +1,459 @@
 <template>
-  <section class="full-height">
-    <div class="custom-container">
-      <div class="flex-container">
-        <div class="left-content">
-          <div class="mb-10">
-            <a href="/"
-              ><img class="mb-6 ml-img" src="/image/Logo_noir.svg" alt="logo du site"
-            /></a>
-            <h2 class="title">Content de vous revoir!</h2>
-          </div>
-          <form class="form">
-            <!-- Adresse mail -->
-            <SignUpForm @signup-success="handleSignUpSuccess" />
-
-            <div class="flex-divider">
-              <p class="centered-text">OU</p>
-            </div>
-
-            <LoginForm @login-success="handleLoginSuccess" />
-
-            <div class="options">
-              <div class="form-check">
-                <input type="checkbox" class="custom-checkbox" id="exampleCheck3" checked />
-                <label class="check-label">Se souvenir de moi</label>
-              </div>
-              <a href="#!" class="forgot-password">Mot de passe oublié?</a>
-            </div>
-
-            <!-- Bouton de connexion
-            <button type="submit" class="submit-btn">Se connecter</button> -->
-          </form>
-        </div>
-        <!-- Image -->
-        <div class="right-content">
-          <img
-            src="/image/montre_connexion.webp"
-            class="full-width"
-            alt="image montre connecte connexion"
-          />
-        </div>
+  <Header />
+  <h1>Détails de la montre</h1>
+  <div v-if="montreDetails">
+    <h2>Nom: {{ montreDetails.watch_name }}</h2>
+    <p>Prix: {{ montreDetails.price }}</p>
+    <p>Boîtier: {{ montreDetails.case_name }}</p>
+    <p>Cadran: {{ montreDetails.dial_name }}</p>
+    <p>Pierres: {{ montreDetails.stones_name }}</p>
+    <p>Bracelet: {{ montreDetails.bracelet_name }}</p>
+    <p>Prix métal: {{ montreDetails.metal_price }}</p>
+    <p>Prix cuir: {{ montreDetails.leather_price }}</p>
+    <p>Prix tissu: {{ montreDetails.fabric_price }}</p>
+  </div>
+  <div v-else>
+    <p>Loading...</p>
+  </div>
+  <form @submit.prevent="updateMontreConfig" class="column-form">
+    <label>Nom de la montre</label>
+    <input v-model="updatedConfig.watch_name" type="text" placeholder="watch_name" />
+    <h2>Boitier</h2>
+    <div class="custom-radios">
+      <div>
+        <input
+          type="radio"
+          id="case-color-1"
+          name="case-color"
+          value="1"
+          checked
+          v-model="updatedConfig.case_id"
+        />
+        <label for="case-color-1">
+          <span>
+            <img
+              src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
+              alt="Checked Icon"
+            />
+          </span>
+        </label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="case-color-2"
+          name="case-color"
+          value="2"
+          v-model="updatedConfig.case_id"
+        />
+        <label for="case-color-2">
+          <span>
+            <img
+              src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
+              alt="Checked Icon"
+            />
+          </span>
+        </label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="case-color-3"
+          name="case-color"
+          value="3"
+          v-model="updatedConfig.case_id"
+        />
+        <label for="case-color-3">
+          <span>
+            <img
+              src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
+              alt="Checked Icon"
+            />
+          </span>
+        </label>
       </div>
     </div>
-  </section>
+    <h2>Cadran</h2>
+    <div class="custom-radios">
+      <div>
+        <input
+          type="radio"
+          id="dial-color-1"
+          name="dial-color"
+          value="1"
+          checked
+          v-model="updatedConfig.dial_id"
+        />
+        <label for="dial-color-1">
+          <span>
+            <img
+              src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
+              alt="Checked Icon"
+            />
+          </span>
+        </label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="dial-color-2"
+          name="dial-color"
+          value="2"
+          v-model="updatedConfig.dial_id"
+        />
+        <label for="dial-color-2">
+          <span>
+            <img
+              src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
+              alt="Checked Icon"
+            />
+          </span>
+        </label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="dial-color-3"
+          name="dial-color"
+          value="3"
+          v-model="updatedConfig.dial_id"
+        />
+        <label for="dial-color-3">
+          <span>
+            <img
+              src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
+              alt="Checked Icon"
+            />
+          </span>
+        </label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="dial-color-4"
+          name="dial-color"
+          value="4"
+          v-model="updatedConfig.dial_id"
+        />
+        <label for="dial-color-4">
+          <span>
+            <img
+              src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
+              alt="Checked Icon"
+            />
+          </span>
+        </label>
+      </div>
+    </div>
+    <h2>Pierres précieuses</h2>
+    <div class="custom-radios">
+      <div>
+        <input
+          type="radio"
+          id="stone-color-1"
+          name="stone-color"
+          value="1"
+          checked
+          v-model="updatedConfig.stones_id"
+        />
+        <label for="stone-color-1">
+          <span>
+            <img
+              src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
+              alt="Checked Icon"
+            />
+          </span>
+        </label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="stone-color-2"
+          name="stone-color"
+          value="2"
+          v-model="updatedConfig.stones_id"
+        />
+        <label for="stone-color-2">
+          <span>
+            <img
+              src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
+              alt="Checked Icon"
+            />
+          </span>
+        </label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="stone-color-3"
+          name="stone-color"
+          value="3"
+          v-model="updatedConfig.stones_id"
+        />
+        <label for="stone-color-3">
+          <span>
+            <img
+              src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
+              alt="Checked Icon"
+            />
+          </span>
+        </label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="stone-color-4"
+          name="stone-color"
+          value="4"
+          v-model="updatedConfig.stones_id"
+        />
+        <label for="stone-color-4">
+          <span>
+            <img
+              src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
+              alt="Checked Icon"
+            />
+          </span>
+        </label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="stone-color-5"
+          name="stone-color"
+          value="5"
+          v-model="updatedConfig.stones_id"
+        />
+        <label for="stone-color-5">
+          <span>
+            <img
+              src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
+              alt="Checked Icon"
+            />
+          </span>
+        </label>
+      </div>
+    </div>
+    <h2>Bracelets</h2>
+    <div class="custom-radios">
+      <div>
+        <input
+          type="radio"
+          id="bracelet-color-1"
+          name="bracelet-color"
+          value="1"
+          checked
+          v-model="updatedConfig.bracelet_id"
+        />
+        <label for="bracelet-color-1">
+          <span>
+            <img
+              src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
+              alt="Checked Icon"
+            />
+          </span>
+        </label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="bracelet-color-2"
+          name="bracelet-color"
+          value="2"
+          v-model="updatedConfig.bracelet_id"
+        />
+        <label for="bracelet-color-2">
+          <span>
+            <img
+              src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
+              alt="Checked Icon"
+            />
+          </span>
+        </label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="bracelet-color-3"
+          name="bracelet-color"
+          value="3"
+          v-model="updatedConfig.bracelet_id"
+        />
+        <label for="bracelet-color-3">
+          <span>
+            <img
+              src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg"
+              alt="Checked Icon"
+            />
+          </span>
+        </label>
+      </div>
+    </div>
+    <button type="submit" class="submit-btn">Enregistrer</button>
+    <button @click="deleteMontre" class="submit-btn">Supprimer cette montre</button>
+  </form>
+  <Footer />
 </template>
+<script setup>
+import Footer from '../components/footer.vue'
+import Header from '../components/header.vue'
+</script>
 
 <script>
-import SignUpForm from '../components/SignUpForm.vue'
-import LoginForm from '../components/LoginForm.vue'
+import axios from 'axios'
 
 export default {
-  components: {
-    SignUpForm,
-    LoginForm
+  data() {
+    return {
+      montreDetails: null,
+      updatedConfig: {
+        watch_name: '',
+        case_id: '',
+        dial_id: '',
+        stones_id: '',
+        bracelet_id: ''
+      }
+    }
+  },
+  created() {
+    const configId = this.$route.params.configId
+    this.getMontreDetails(configId)
   },
   methods: {
-    handleSignUpSuccess(user_id) {
-      console.log('Inscription réussie, ID utilisateur:', user_id)
-      // Traiter la réussite de l'inscription ici si nécessaire
+    async getMontreDetails(configId) {
+      try {
+        const response = await axios.get(`http://localhost:4000/montres/${configId}`)
+        this.montreDetails = response.data
+      } catch (error) {
+        console.error('Erreur lors de la récupération des détails de la montre:', error)
+      }
     },
-    handleLoginSuccess(user_id, token) {
-      console.log('Connexion réussie, ID utilisateur:', user_id)
-      // Stocker le token dans le stockage local
-      localStorage.setItem('token', token)
-      // Traiter la réussite de la connexion ici si nécessaire
+    async updateMontreConfig() {
+      try {
+        const configId = this.$route.params.configId
+        const response = await axios.put(
+          `http://localhost:4000/montres/${configId}`,
+          this.updatedConfig
+        )
+        console.log(response.data) // Affiche la réponse du serveur après la mise à jour
+        // Tu peux rediriger l'utilisateur ou faire d'autres actions après la mise à jour réussie
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour de la configuration de la montre:', error)
+      }
+    },
+    async deleteMontre() {
+      try {
+        const configId = this.$route.params.configId
+        const response = await axios.delete(`http://localhost:4000/montres/${configId}`)
+        console.log(response.data) // Réponse du serveur après la suppression
+
+        // Rediriger l'utilisateur ou effectuer d'autres actions après la suppression réussie
+        this.$router.push('/montres')
+      } catch (error) {
+        console.error('Erreur lors de la suppression de la montre:', error)
+        // Gérer l'erreur, afficher un message à l'utilisateur, etc.
+      }
     }
   }
 }
 </script>
 
-<style lang="scss">
-/* Styles pour la section */
-.full-height {
-  height: 100vh;
-}
+<style lang="scss" scoped>
+$color-1: #2ecc71;
+$color-2: #3498db;
+$color-3: #f1c40f;
+$color-4: #00721f;
+$color-5: #e74c3c;
 
-/* Styles pour le conteneur personnalisé */
-.custom-container {
-  padding: 3rem;
+html,
+body {
   height: 100%;
+  width: 100%;
+  margin: 0;
 }
 
-/* Styles pour le conteneur flex */
-.flex-container {
+body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem;
-  color: black;
-  width: 92%;
-  height: 94%;
-  border-width: 4px;
-  border-style: solid;
-  border-color: #f59e0b;
-  border-radius: 1rem;
+  background-color: #222;
 }
 
-/* Styles pour le contenu de gauche */
-.left-content {
-  width: 30%;
-  // margin-left: 10%;
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
+.custom-radios {
+  div {
+    display: inline-block;
+  }
+
+  input[type='radio'] {
+    display: none;
+
+    + label {
+      color: #333;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+
+      span {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        margin: -1px 4px 0 0;
+        vertical-align: middle;
+        cursor: pointer;
+        border-radius: 50%;
+        border: 2px solid #ffffff;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
+        background-repeat: no-repeat;
+        background-position: center;
+        text-align: center;
+        line-height: 44px;
+
+        img {
+          opacity: 0;
+          transition: all 0.3s ease;
+        }
+      }
+    }
+
+    &#case-color-1 + label span,
+    &#dial-color-1 + label span,
+    &#stone-color-1 + label span,
+    &#bracelet-color-1 + label span {
+      background-color: $color-1;
+    }
+
+    &#case-color-2 + label span,
+    &#dial-color-2 + label span,
+    &#stone-color-2 + label span,
+    &#bracelet-color-2 + label span {
+      background-color: $color-2;
+    }
+
+    &#case-color-3 + label span,
+    &#dial-color-3 + label span,
+    &#stone-color-3 + label span,
+    &#bracelet-color-3 + label span {
+      background-color: $color-3;
+    }
+
+    &#case-color-4 + label span,
+    &#dial-color-4 + label span,
+    &#stone-color-4 + label span,
+    &#bracelet-color-4 + label span {
+      background-color: $color-4;
+    }
+    &#case-color-5 + label span,
+    &#dial-color-5 + label span,
+    &#stone-color-5 + label span,
+    &#bracelet-color-5 + label span {
+      background-color: $color-5;
+    }
+
+    &:checked + label span img {
+      opacity: 1;
+    }
+  }
 }
 
-.form {
-  display: flex;
-  gap: 10px;
-  flex-direction: column;
-}
-
-/* Styles pour les images */
-.ml-img {
-  margin-left: -40px;
-  margin-bottom: 20px;
-}
-
-/* Styles pour les titres */
-.title {
-  font-weight: 600;
-  font-size: 2.5rem;
-  font-family: $primary-font-family;
-}
-
-/* Styles pour le texte */
-.medium-text {
-  font-weight: 500;
-  font-size: 1.5rem;
-  font-family: $primary-font-family;
-}
-
-/* Styles pour le diviseur */
-.flex-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  margin: 8px 0;
-  font-family: $primary-font-family;
-}
-
-/* Styles pour le texte centré */
-.centered-text {
-  font-weight: 600;
-  text-align: center;
-}
-
-.options {
-  display: flex;
-  justify-content: space-between;
-  margin: 1.5rem 0;
-}
-
-/* Styles pour le label du formulaire */
-.check-label {
-  font-weight: 700;
-  color: #4b5563;
-  display: inline-block;
-  margin-bottom: 0;
-  font-family: $primary-font-family;
-}
-
-/* Styles pour le bouton de soumission */
 .submit-btn {
   display: inline-block;
   padding-top: 0.75rem;
@@ -169,7 +461,7 @@ export default {
   padding-left: 1.75rem;
   padding-right: 1.75rem;
   border-radius: 0.25rem;
-  width: 100%;
+  max-width: 400px;
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
@@ -189,55 +481,5 @@ export default {
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-/* Styles pour l'image */
-.right-content {
-  width: 41%;
-  // margin-top: 1px;
-  margin-left: 13.48rem;
-  z-index: -2;
-}
-
-/* Styles pour les inputs */
-.custom-input {
-  display: block;
-  width: 95%;
-  padding: 0.5rem 1rem;
-  font-size: 1.5rem;
-  font-weight: 400;
-  border-radius: 0.35rem;
-  color: black;
-  background-color: white;
-  background-clip: padding-box;
-  border-width: 2px;
-  border-style: solid;
-  border-color: black;
-  transition: all 0.3s ease-in-out;
-  margin: 0;
-  font-family: $primary-font-family;
-}
-
-/* Styles pour la case à cocher */
-.custom-checkbox {
-  width: 20px;
-  height: 20px;
-  margin-right: 0.5rem;
-}
-
-/* Styles pour le lien "Mot de passe oublié?" */
-.forgot-password {
-  color: black;
-  transition: color 0.3s ease-in-out;
-  font-family: $primary-font-family;
-}
-
-/* Styles pour les effets de survol des boutons */
-.submit-btn:hover {
-  background-color: #f59e0b;
-  color: white;
-}
-.forgot-password:hover {
-  color: #f59e0b;
 }
 </style>
