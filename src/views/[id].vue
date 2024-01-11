@@ -19,7 +19,7 @@
       <h2>Modifier la configuration</h2>
       <form @submit.prevent="updateMontreConfig" class="column-form">
         <label>Nom de la montre</label>
-        <input v-model="updatedConfig.watch_name" type="text" />
+        <input v-model="updatedConfig.watch_name" type="text" placeholder="watch_name" />
         <label>Boitier</label>
         <div style="display: flex; flex-direction: row">
           <input type="radio" id="optionC1" name="case" value="1" v-model="updatedConfig.case_id" />

@@ -27,7 +27,7 @@
   </header>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .header-nav {
   padding-left: 1rem;
   padding-right: 1rem;

@@ -55,7 +55,7 @@
   </footer>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 /* Styles pour le conteneur du footer */
 .footer-container {
   padding: 3rem;
