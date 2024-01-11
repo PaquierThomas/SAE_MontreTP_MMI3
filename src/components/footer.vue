@@ -37,6 +37,14 @@
             </li>
           </ul>
         </div>
+        <div class="legal-info">
+          <h2 class="section-title">Parties tierce</h2>
+          <ul class="section-list">
+            <li class="list-item">
+              <a href="#" class="list-link" @click="deconnecter">Se déconnecter</a>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="footer-logo">
         <a href="/" class="logo-link">
@@ -123,3 +131,15 @@
   height: 100%;
 }
 </style>
+
+<script>
+export default {
+  methods: {
+    deconnecter() {
+      // Efface le token du stockage local
+      localStorage.removeItem('token')
+      console.log('Déconnexion réussie')
+    }
+  }
+}
+</script>

@@ -11,31 +11,13 @@
           </div>
           <form class="form">
             <!-- Adresse mail -->
-            <div class="mb-6">
-              <input type="text" class="custom-input" placeholder="Votre adresse mail" />
-            </div>
-
-            <!-- Mot de passe -->
-            <div class="mb-6">
-              <input type="password" class="custom-input" placeholder="Password" />
-            </div>
-
-            <!-- Bouton de connexion -->
-            <button type="submit" class="submit-btn">Créer le compte</button>
+            <SignUpForm @signup-success="handleSignUpSuccess" />
 
             <div class="flex-divider">
               <p class="centered-text">OU</p>
             </div>
 
-            <!-- Adresse mail -->
-            <div class="mb-6">
-              <input type="text" class="custom-input" placeholder="Votre adresse mail" />
-            </div>
-
-            <!-- Mot de passe -->
-            <div class="mb-6">
-              <input type="password" class="custom-input" placeholder="Password" />
-            </div>
+            <LoginForm @login-success="handleLoginSuccess" />
 
             <div class="options">
               <div class="form-check">
@@ -45,8 +27,8 @@
               <a href="#!" class="forgot-password">Mot de passe oublié?</a>
             </div>
 
-            <!-- Bouton de connexion -->
-            <button type="submit" class="submit-btn">Se connecter</button>
+            <!-- Bouton de connexion
+            <button type="submit" class="submit-btn">Se connecter</button> -->
           </form>
         </div>
         <!-- Image -->
@@ -61,6 +43,30 @@
     </div>
   </section>
 </template>
+
+<script>
+import SignUpForm from '../components/SignUpForm.vue'
+import LoginForm from '../components/LoginForm.vue'
+
+export default {
+  components: {
+    SignUpForm,
+    LoginForm
+  },
+  methods: {
+    handleSignUpSuccess(user_id) {
+      console.log('Inscription réussie, ID utilisateur:', user_id)
+      // Traiter la réussite de l'inscription ici si nécessaire
+    },
+    handleLoginSuccess(user_id, token) {
+      console.log('Connexion réussie, ID utilisateur:', user_id)
+      // Stocker le token dans le stockage local
+      localStorage.setItem('token', token)
+      // Traiter la réussite de la connexion ici si nécessaire
+    }
+  }
+}
+</script>
 
 <style lang="scss">
 /* Styles pour la section */
