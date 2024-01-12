@@ -1,150 +1,116 @@
 <template>
   <div>
     <canvas ref="canvas" />
-    <div class="mt-2">
-      <div>
-        <h2 class="font-bold">Texture du Bracelet :</h2>
-      </div>
-      <div class="flex gap-2">
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changeTexture('texture-cuir-blanc.jpg')"
-        >
-          Cuir Blanc
-        </button>
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changeTexture('texture-tissus-or.jpg')"
-        >
-          Tissu Or
-        </button>
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changeTexture('texture-tissus-marron.jpg')"
-        >
-          Tissu Marron
-        </button>
-      </div>
-    </div>
-    <div class="mt-2">
-      <div>
-        <h2 class="font-bold">Texture du Boitier Rond</h2>
-      </div>
-      <div class="flex gap-2">
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changeTextureBoitierRond('background_black01.png')"
-        >
+    <h2>Ajouter une montre</h2>
+    <form @submit.prevent="addWatch">
+      <label for="userId">ID Utilisateur:</label>
+      <h2>{{ token }}</h2>
+
+      <label for="watchName">Nom de la montre:</label>
+      <input v-model="newWatch.watchName" type="text" id="watchName" name="watchName" /><br /><br />
+
+      <label for="caseId">Boîtier:</label>
+      <select v-model="newWatch.caseId" id="caseId" name="caseId">
+        <option value="" disabled selected hidden>Choisissez un boîtier</option>
+        <option value="1" @click="toggleBoitierRond">Rond</option>
+        <option value="2" @click="toggleBoitierRond">Carré</option></select
+      ><br /><br />
+
+      <label for="dialId">Cadran:</label>
+      <select v-model="newWatch.dialId" id="dialId" name="dialId">
+        <option value="1" @click="changeTextureBoitierRond('background_black01.png')">
           Classic Black
-        </button>
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changeTextureBoitierRond('background_black02.png')"
-        >
+        </option>
+        <option value="2" @click="changeTextureBoitierRond('background_black02.png')">
           Hourless Black
-        </button>
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changeTextureBoitierRond('background_fluo01.png')"
-        >
-          Fluo
-        </button>
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changeTextureBoitierRond('background_mickey.png')"
-        >
-          Mickey
-        </button>
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changeTextureBoitierRond('background_white01.png')"
-        >
-          Neon
-        </button>
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changeTextureBoitierRond('background_white02.png')"
-        >
-          Clock
-        </button>
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changeTextureBoitierRond('background_white03.png')"
-        >
+        </option>
+        <option value="3" @click="changeTextureBoitierRond('background_fluo01.png')">Fluo</option>
+        <option value="4" @click="changeTextureBoitierRond('background_mickey.png')">Mickey</option>
+        <option value="5" @click="changeTextureBoitierRond('background_white01.png')">Neon</option>
+        <option value="6" @click="changeTextureBoitierRond('background_white02.png')">Clock</option>
+        <option value="7" @click="changeTextureBoitierRond('background_white03.png')">
           Classic
-        </button>
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changeTextureBoitierRond('background_white04.png')"
-        >
-          Pure
-        </button>
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changeTextureBoitierRond('background_white05.png')"
-        >
+        </option>
+        <option value="8" @click="changeTextureBoitierRond('background_white05.png')">
           Timeless
-        </button>
-      </div>
-    </div>
-    <div class="flex gap-2 my-2">
-      <div>
-        <h2 class="font-bold">Couleur du Fermoir</h2>
-      </div>
-      <input type="color" @input="handleColorChange" />
-    </div>
-    <div class="mt-2">
-      <div>
-        <h2 class="font-bold">Type de Pierre Précieuse</h2>
-      </div>
-      <div class="flex gap-2">
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changePierreColor('rubis')"
-        >
-          Rubis
-        </button>
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changePierreColor('diamant')"
-        >
-          Diamant
-        </button>
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changePierreColor('émeraude')"
-        >
-          Émeraude
-        </button>
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changePierreColor('topaze')"
-        >
-          Topaze
-        </button>
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="changePierreColor('saphir')"
-        >
-          Saphir
-        </button>
-      </div>
-    </div>
-    <div class="mt-2">
-      <div>
-        <h2 class="font-bold">Choix du boitier :</h2>
-      </div>
-      <div class="flex gap-2">
-        <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
-          @click="toggleBoitierRond"
-        >
-          Boitier Rond / Carré
-        </button>
-      </div>
-    </div>
+        </option></select
+      ><br /><br />
+
+      <label for="stonesId">Pierres précieuses:</label>
+      <select v-model="newWatch.stonesId" id="stonesId" name="stonesId">
+        <option value="1" @click="changePierreColor('rubis')">Rubis</option>
+        <option value="2" @click="changePierreColor('diamant')">Diamant</option>
+        <option value="3" @click="changePierreColor('émeraude')">Emeraude</option>
+        <option value="4" @click="changePierreColor('topaze')">Topaze</option>
+        <option value="5" @click="changePierreColor('saphir')">Saphir</option></select
+      ><br /><br />
+
+      <label for="braceletId">Bracelet:</label>
+      <select v-model="newWatch.braceletId" id="braceletId" name="braceletId">
+        <option value="1" @click="changeTexture('texture-tissus-marron.jpg')">Tissu marron</option>
+        <option value="2" @click="changeTexture('texture-tissus-or.jpg')">Tissu Or</option>
+        <option value="3" @click="changeTexture('texture-cuir-blanc.jpg')">Cuir</option></select
+      ><br /><br />
+
+      <label for="price">Prix:</label>
+      <input v-model="newWatch.price" type="text" id="price" name="price" /><br /><br />
+
+      <input type="submit" value="Ajouter la montre" />
+    </form>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      token: localStorage.getItem('token'), // Récupérer le token une seule fois
+      newWatch: {
+        userId: '',
+        watchName: '',
+        caseId: '',
+        dialId: '',
+        stonesId: '',
+        braceletId: '',
+        price: ''
+      }
+    }
+  },
+  methods: {
+    async addWatch() {
+      // Afficher le token dans la console
+      console.log(this.token)
+
+      // Vérifier si l'utilisateur est connecté
+      if (!this.token) {
+        // Rediriger l'utilisateur vers la page de connexion
+        this.$router.push('/connexion')
+        return
+      }
+
+      // Assigner la valeur du token à userId
+      this.newWatch.userId = this.token
+
+      try {
+        const response = await fetch('http://localhost:4000/add-watch', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.newWatch)
+        })
+
+        const data = await response.json()
+        console.log(data)
+        alert('Montre ajoutée avec succès!')
+      } catch (error) {
+        console.error('Error adding watch:', error)
+        alert("Erreur lors de l'ajout de la montre.")
+      }
+    }
+  }
+}
+</script>
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
@@ -153,13 +119,22 @@ import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader.js'
 import * as THREE from 'three'
 import { TextureLoader } from 'three/src/loaders/TextureLoader.js'
 
+var clickInfo = []
+var animations = []
+
 const canvas = ref(null)
-let controls = null
 let clock = new THREE.Clock()
-let scene = null
-let camera = null
-let renderer = null
 let animationId = null
+const raycaster = new THREE.Raycaster()
+
+function onClickEvent(event) {
+  clickInfo.userHasClicked = true
+  clickInfo.mouse = new THREE.Vector2()
+  clickInfo.mouse.x = ((event.clientX - window.innerWidth) / window.innerHeight) * 2 - 1
+  clickInfo.mouse.y = -((event.clientY - window.innerWidth) / window.innerHeight) * 2 + 1
+}
+
+var renderer, scene, camera, controls
 let aiguilleHeures,
   aiguilleMinutes,
   aiguilleSecondes,
@@ -175,20 +150,32 @@ let currentTextureBoitierRond = '/background_black01.png'
 
 const initScene = () => {
   scene = new THREE.Scene()
-  camera = new THREE.PerspectiveCamera(13, window.innerWidth / window.innerHeight, 0.1, 1000)
+
+  camera = new THREE.PerspectiveCamera(13, window.innerWidth / window.innerHeight, 1, 60000)
+  camera.position.set(25 / 2.54, 320 / 2.54, 600 / 2.54)
 
   renderer = new THREE.WebGLRenderer({ canvas: canvas.value })
   renderer.setSize(window.innerWidth, window.innerHeight)
   controls = new OrbitControls(camera, renderer.domElement)
+  renderer.shadowMap.enabled = true
+
+  // controls.target.set(0, 0, 0)
+  // controls.minDistance = 200 / 2.54
+  // controls.maxDistance = 500 / 2.54
+  // controls.enablePan = true
+  // controls.enableDamping = true
+  // controls.panSpeed = 1
+  // controls.screenSpacePanning = false
+  controls.update()
 
   //   // Créer une lumière ambiante
-  //   const ambientLight = new THREE.AmbientLight(0xffffff, 1)
-  //   scene.add(ambientLight)
-
-  //   // Créer une lumière directionnelle
-  //   const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
-  //   directionalLight.position.set(0, 1, 0) // Position de la lumière
-  //   scene.add(directionalLight)
+  var ambientLight = new THREE.AmbientLight(0x202020)
+  scene.add(ambientLight)
+  // In your point light setup:
+  var pointLight = new THREE.PointLight(0xffffff, 1)
+  pointLight.position.set(-300, 600, 1500)
+  pointLight.castShadow = true
+  scene.add(pointLight)
 
   var loader = new ColladaLoader()
   loader.load('/models/montre.dae', onLoaded, onProgress, onError)
@@ -213,6 +200,49 @@ const animate = () => {
   let dt = clock.getDelta()
   updateClockHands()
   animationId = requestAnimationFrame(animate)
+
+  // if (clickInfo.userHasClicked) {
+  //   document.getElementById('positions').value =
+  //     '(' +
+  //     parseInt(0.5 * (clickInfo.mouse.x + 1) * SCREEN_WIDTH + SCREEN_LEFT) +
+  //     ';' +
+  //     parseInt(-0.5 * (clickInfo.mouse.y - 1) * SCREEN_HEIGHT + SCREEN_TOP) +
+  //     ')'
+  //   clickInfo.userHasClicked = false // pret pour le clique suivant
+  //   raycaster.setFromCamera(clickInfo.mouse, camera)
+  //   let intersections = raycaster.intersectObjects(scene.children, true)
+  //   let obj = null
+  //   if (intersections.length > 0) {
+  //     obj = intersections[0].object // l'objet de la premiere intersection
+  //     // si l'objet à un nom vide alors on sélectionne son pere
+  //     while (obj != null && obj.name == '') {
+  //       // cherche le nom du parent
+  //       obj = obj.parent
+  //     }
+  //     document.getElementById('obj_name').value =
+  //       obj.name +
+  //       ' uv= (' +
+  //       intersections[0].uv.x.toFixed(2) +
+  //       ',' +
+  //       intersections[0].uv.y.toFixed(2) +
+  //       ')'
+  //     if (obj) {
+  //       // Lance la fonction onclick sur l'objet cliqué
+  //       animations.forEach((object) => {
+  //         if (object.name == obj.name) {
+  //           object.onClick(intersections[0])
+  //         }
+  //       })
+  //     }
+  //   }
+  // }
+
+  animations.forEach((object) => {
+    // mettre à jour l'animation sur tous les objects cliquables
+    object.updateAnimation(dt)
+  })
+
+  controls.update()
   renderer.render(scene, camera)
 }
 
@@ -281,22 +311,29 @@ const changeTextureBoitierRond = (textureBoitierRond) => {
 
 function onLoaded(collada) {
   let objects = collada.scene
+  scene.add(objects)
+  objects.scale.set(0.8, 0.8, 0.8)
 
   aiguilleHeures = objects.getObjectByName('aiguille_heures')
   aiguilleHeures.material = new THREE.MeshBasicMaterial({
     color: 0x888888
   })
+  aiguilleHeures.material.color.set(0x888888)
   aiguilleMinutes = objects.getObjectByName('aiguille_minutes')
   aiguilleMinutes.material = new THREE.MeshBasicMaterial({
     color: 0x666666
   })
   aiguilleSecondes = objects.getObjectByName('aiguille_secondes')
   aiguilleSecondes.material = new THREE.MeshBasicMaterial({
-    color: 0x00ff00
+    color: 0xd9544d
   })
 
   boitierRond = objects.getObjectByName('boitier_rond')
-  //   boitierRond.material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+  boitierRond.material[0] = new THREE.MeshBasicMaterial({
+    color: 0x777777,
+    specular: 0x777777,
+    shininess: 1
+  })
   const textureLoaderBoitierRond = new TextureLoader()
   const textureBoitierRond = textureLoaderBoitierRond.load(`/images/${currentTextureBoitierRond}`)
   boitierRond.material[1] = new THREE.MeshBasicMaterial({
@@ -304,12 +341,16 @@ function onLoaded(collada) {
   })
 
   boitierCarre = objects.getObjectByName('boitier_carre')
-  boitierCarre.material = new THREE.MeshBasicMaterial({ color: 0x0000ff })
+  const textureBoitierCarre = textureLoaderBoitierRond.load(`/images/${currentTextureBoitierRond}`)
+  boitierCarre.material[0] = new THREE.MeshBasicMaterial({ color: 0x777777 })
+  boitierRond.material[1] = new THREE.MeshBasicMaterial({
+    map: textureBoitierCarre
+  })
   boitierCarre.visible = false
 
   iBouton = objects.getObjectByName('bouton')
   iBouton.material = new THREE.MeshBasicMaterial({
-    color: 0x0000ff // Couleur par défaut du bouton côté
+    color: 0x202020 // Couleur par défaut du bouton côté
   })
 
   iPierre = objects.getObjectByName('pierre')
@@ -331,11 +372,15 @@ function onLoaded(collada) {
   iBracelet = objects.getObjectByName('bracelet')
   const textureLoader = new TextureLoader()
   const texture = textureLoader.load(`/images/${currentTexture}`)
-  iBracelet.material = new THREE.MeshBasicMaterial({ map: texture })
+  iBracelet.material = new THREE.MeshBasicMaterial({
+    map: texture,
+    color: 0x777777
+  })
+  console.log(iBracelet)
 
   iFermoir = objects.getObjectByName('fermoir')
   iFermoir.material = new THREE.MeshBasicMaterial({
-    color: 0x000000 // couleur par défaut du fermoir
+    color: 0x777777 // couleur par défaut du fermoir
   })
 
   scene.add(
@@ -358,6 +403,7 @@ function onLoaded(collada) {
   camera.lookAt(new THREE.Vector3(0, 0, 5))
   camera.up.set(0, 0, 1)
   controls.update()
+  scene.add(camera)
 }
 
 var onProgress = function (data) {
@@ -387,4 +433,5 @@ onBeforeUnmount(() => {
   height: 100%;
 }
 </style>
-```
+
+<script setup></script>

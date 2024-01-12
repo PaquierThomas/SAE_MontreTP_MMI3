@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <title>DUT MMI - SAE2023</title>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="images/icon.png" />
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+        background-color: #777777;
+      }
+      #canvas {
+        display: block;
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        right: 434px;
+        bottom: 10px;
+        background-color: #000000;
+      }
+      #info {
+        display: block;
+        position: absolute;
+        width: 400px;
+        top: 10px;
+        right: 10px;
+        bottom: 10px;
+        background-color: #eeeeee;
+        border: 2px solid white;
+        padding: 5px;
+        font-size: 14pt;
+        font-family: times new roman;
+        font-weight: bold;
+        font-style: italic;
+        color: black;
+      }
+      input {
+        background-color: #ffffff;
+        border: none;
+        width: 260px;
+        color: black;
+        font-size: 14pt;
+        font-family: times new roman;
+        font-weight: bold;
+      }
+      #divTexture {
+        display: none;
+        position: absolute;
+        width: 256px;
+        height: 256px;
+        bottom: 5px;
+        left: 5px;
+        background-color: black;
+        border: 1px solid white;
+        padding: 0px;
+        color: white;
+      }
+      #canvasTexture {
+        width: 256px;
+        height: 256px;
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="canvas"></div>
+    <div id="info">
+      <table>
+        <tr>
+          <td>Click position:</td>
+          <td><input type="text" id="positions" value="(0;0)" class="info" /></td>
+        </tr>
+        <tr>
+          <td>Clicked object:</td>
+          <td><input type="text" id="obj_name" value="vide" class="info" /></td>
+        </tr>
+        <tr>
+          <td>Action:</td>
+          <td><input type="text" id="action" value="0" class="info" /></td>
+        </tr>
+      </table>
+      <div id="divTexture">
+        <canvas id="canvasTexture" width="256" height="256" />
+      </div>
+    </div>
+
+    <script type="module">
+      import * as THREE from '../three.js-dev/build/three.module.js'
+      import { OrbitControls } from '../three.js-dev/examples/jsm/controls/OrbitControls.js'
+      import { ColladaLoader } from '../three.js-dev/examples/jsm/loaders/ColladaLoader.js'
+      var clickInfo = []
+      var animations = [] // tableau qui contient la liste de objets cliquables
+      var container = document.getElementById('canvas')
+
+      // variables utilisées par les deux fonctions
+      var renderer, camera, scene, controls
+      var clock = new THREE.Clock()
+      var SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_LEFT, SCREEN_TOP
+      const raycaster = new THREE.Raycaster()
+
+      function onClickEvent(event) {
+        clickInfo.userHasClicked = true
+        clickInfo.mouse = new THREE.Vector2()
+        clickInfo.mouse.x = ((event.clientX - SCREEN_LEFT) / SCREEN_WIDTH) * 2 - 1
+        clickInfo.mouse.y = -((event.clientY - SCREEN_TOP) / SCREEN_HEIGHT) * 2 + 1
+      }
+
+      function onWindowResize() {
+        let w = container.offsetWidth
+        let h = container.offsetHeight
+        SCREEN_WIDTH = container.scrollWidth
+        SCREEN_HEIGHT = container.scrollHeight
+        SCREEN_LEFT = container.offsetLeft - container.scrollLeft + container.clientLeft
+        SCREEN_TOP = container.offsetTop - container.scrollTop + container.clientTop
+        camera.aspect = w / h
+        camera.updateProjectionMatrix()
+        renderer.setSize(w, h)
+      }
+
+      function start() {
+        // initialisation du moteur de rendu
+        renderer = new THREE.WebGLRenderer()
+        // création d'un canvas dans un div
+        renderer.setClearColor(0x222222, 1)
+        window.addEventListener('resize', onWindowResize, false)
+
+        container.appendChild(renderer.domElement)
+        container.addEventListener('click', onClickEvent, false)
+
+        let w = container.offsetWidth
+        let h = container.offsetHeight
+        SCREEN_WIDTH = container.scrollWidth
+        SCREEN_HEIGHT = container.scrollHeight
+        SCREEN_LEFT = container.offsetLeft - container.scrollLeft + container.clientLeft
+        SCREEN_TOP = container.offsetTop - container.scrollTop + container.clientTop
+        renderer.setSize(w, h)
+
+        // création d'une caméra perspective(angle d'ouverture, rapport largeur/hauteur, near, far)
+        camera = new THREE.PerspectiveCamera(30, w / h, 1, 60000)
+        camera.position.set(25 / 2.54, 320 / 2.54, 600 / 2.54)
+        controls = new OrbitControls(camera, renderer.domElement)
+        controls.target.set(0, 0, 0)
+        controls.minDistance = 200 / 2.54
+        controls.maxDistance = 500 / 2.54
+        controls.enablePan = true
+        controls.enableDamping = true
+        controls.panSpeed = 1
+        controls.screenSpacePanning = false
+        controls.update()
+
+        // création de la scène
+        scene = new THREE.Scene()
+        scene.add(camera)
+
+        clock.start()
+        var loader = new ColladaLoader()
+        loader.load('./models/montre.dae', onLoaded, onProgress, onError)
+
+        // sources de lumière (une ambiante et une ponctuelle placée en [-10;100;200])
+        var ambientLight = new THREE.AmbientLight(0x202020)
+        scene.add(ambientLight)
+        var pointLight = new THREE.PointLight(0xffffff, 1)
+        pointLight.position.set(-300, 600, 1500)
+        scene.add(pointLight)
+      }
+
+      function animate() {
+        // rendu de la scène
+        controls.update()
+        renderer.render(scene, camera)
+
+        // détection du picking
+        if (clickInfo.userHasClicked) {
+          document.getElementById('positions').value =
+            '(' +
+            parseInt(0.5 * (clickInfo.mouse.x + 1) * SCREEN_WIDTH + SCREEN_LEFT) +
+            ';' +
+            parseInt(-0.5 * (clickInfo.mouse.y - 1) * SCREEN_HEIGHT + SCREEN_TOP) +
+            ')'
+          clickInfo.userHasClicked = false // pret pour le clique suivant
+          raycaster.setFromCamera(clickInfo.mouse, camera)
+          let intersections = raycaster.intersectObjects(scene.children, true)
+          let obj = null
+          if (intersections.length > 0) {
+            obj = intersections[0].object // l'objet de la premiere intersection
+            // si l'objet à un nom vide alors on sélectionne son pere
+            while (obj != null && obj.name == '') {
+              // cherche le nom du parent
+              obj = obj.parent
+            }
+            document.getElementById('obj_name').value =
+              obj.name +
+              ' uv= (' +
+              intersections[0].uv.x.toFixed(2) +
+              ',' +
+              intersections[0].uv.y.toFixed(2) +
+              ')'
+            if (obj) {
+              // Lance la fonction onclick sur l'objet cliqué
+              animations.forEach((object) => {
+                if (object.name == obj.name) {
+                  object.onClick(intersections[0])
+                }
+              })
+            }
+          }
+        }
+
+        let dt = clock.getDelta()
+        animations.forEach((object) => {
+          // mettre à jour l'animation sur tous les objects cliquables
+          object.updateAnimation(dt)
+        })
+
+        // lancement du frame suivant
+        requestAnimationFrame(animate)
+      }
+
+      function onLoaded(collada) {
+        let object = collada.scene
+
+        scene.add(object)
+        object.scale.set(0.8, 0.8, 0.8)
+
+        let dt = clock.getElapsedTime()
+        document.getElementById('action').value = 'Load completed after ' + dt.toFixed(2) + ' s.'
+      }
+
+      function onProgress(data) {
+        if (data.lengthComputable) {
+          var percentComplete = (data.loaded / data.total) * 100
+          document.getElementById('action').value = 'Loading:' + percentComplete.toFixed(1) + '%'
+        }
+      }
+
+      function onError(data) {
+        console.error(data)
+      }
+
+      /******************************************************************************/
+      /* PROGRAMME PRINCIPAL ********************************************************/
+      start()
+      animate()
+    </script>
+  </body>
+</html>

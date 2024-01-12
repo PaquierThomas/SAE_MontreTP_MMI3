@@ -3,27 +3,57 @@
     <h1>Ajouter une montre</h1>
     <form @submit.prevent="addWatch">
       <label for="userId">ID Utilisateur:</label>
-      <input v-model="newWatch.userId" type="text" id="userId" name="userId" /><br /><br />
+      <select v-model="newWatch.userId" id="userId" name="userId">
+        <option value="1">Emma</option>
+        <option value="2">Thomas</option>
+        <option value="3">William</option></select
+      ><br /><br />
 
       <label for="watchName">Nom de la montre:</label>
       <input v-model="newWatch.watchName" type="text" id="watchName" name="watchName" /><br /><br />
 
-      <label for="caseId">ID du boîtier:</label>
-      <input v-model="newWatch.caseId" type="text" id="caseId" name="caseId" /><br /><br />
+      <label for="caseId">Boîtier:</label>
+      <select v-model="newWatch.caseId" id="caseId" name="caseId">
+        <option value="" disabled selected hidden>Choisissez un boîtier</option>
+        <option value="1" @click="toggleBoitierRond">Rond</option>
+        <option value="2" @click="toggleBoitierRond">Carré</option></select
+      ><br /><br />
 
-      <label for="dialId">ID du cadran:</label>
-      <input v-model="newWatch.dialId" type="text" id="dialId" name="dialId" /><br /><br />
+      <label for="dialId">Cadran:</label>
+      <select v-model="newWatch.dialId" id="dialId" name="dialId">
+        <option value="1" @click="changeTextureBoitierRond('background_black01.png')">
+          Classic Black
+        </option>
+        <option value="2" @click="changeTextureBoitierRond('background_black02.png')">
+          Hourless Black
+        </option>
+        <option value="3" @click="changeTextureBoitierRond('background_fluo01.png')">Fluo</option>
+        <option value="4" @click="changeTextureBoitierRond('background_mickey.png')">Mickey</option>
+        <option value="5" @click="changeTextureBoitierRond('background_white01.png')">Neon</option>
+        <option value="6" @click="changeTextureBoitierRond('background_white02.png')">Clock</option>
+        <option value="7" @click="changeTextureBoitierRond('background_white03.png')">
+          Classic
+        </option>
+        <option value="8" @click="changeTextureBoitierRond('background_white05.png')">
+          Timeless
+        </option></select
+      ><br /><br />
 
-      <label for="stonesId">ID des pierres:</label>
-      <input v-model="newWatch.stonesId" type="text" id="stonesId" name="stonesId" /><br /><br />
+      <label for="stonesId">Pierres précieuses:</label>
+      <select v-model="newWatch.stonesId" id="stonesId" name="stonesId">
+        <option value="1" @click="changePierreColor('rubis')">Rubis</option>
+        <option value="2" @click="changePierreColor('diamant')">Diamant</option>
+        <option value="3" @click="changePierreColor('émeraude')">Emeraude</option>
+        <option value="4" @click="changePierreColor('topaze')">Topaze</option>
+        <option value="5" @click="changePierreColor('saphir')">Saphir</option></select
+      ><br /><br />
 
-      <label for="braceletId">ID du bracelet:</label>
-      <input
-        v-model="newWatch.braceletId"
-        type="text"
-        id="braceletId"
-        name="braceletId"
-      /><br /><br />
+      <label for="braceletId">Bracelet:</label>
+      <select v-model="newWatch.braceletId" id="braceletId" name="braceletId">
+        <option value="1" @click="changeTexture('texture-tissus-marron.jpg')">Tissu marron</option>
+        <option value="2" @click="changeTexture('texture-tissus-or.jpg')">Tissu Or</option>
+        <option value="3" @click="changeTexture('texture-cuir-blanc.jpg')">Cuir</option></select
+      ><br /><br />
 
       <label for="price">Prix:</label>
       <input v-model="newWatch.price" type="text" id="price" name="price" /><br /><br />
