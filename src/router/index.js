@@ -57,6 +57,13 @@ const router = createRouter({
       beforeEnter: authGuard
     },
     {
+      path: '/three',
+      name: 'three',
+      component: () => import('../views/ThreeView.vue'),
+      meta: { requiresAuth: true },
+      beforeEnter: authGuard
+    },
+    {
       path: '/try',
       name: 'try',
       component: () => import('../views/TryView.vue')

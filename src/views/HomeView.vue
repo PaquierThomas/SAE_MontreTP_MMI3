@@ -43,6 +43,13 @@ h1 {
 
   text-transform: uppercase;
 }
+@media screen and (max-width: 1600px) {
+  h1 {
+    font-size: 100px;
+    padding: 50px 0 50px 25px;
+    margin-left: 40px;
+  }
+}
 
 .right {
   background: black;
