@@ -17,7 +17,12 @@
       ><br /><br />
 
       <label for="dialId">Cadran:</label>
-      <select v-model="newWatch.dialId" id="dialId" name="dialId">
+      <select
+        v-model="newWatch.dialId"
+        id="dialId"
+        name="dialId"
+        @change="changeTextureBoitierRond"
+      >
         <option value="1" @click="changeTextureBoitierRond('background_black01.png')">
           Classic Black
         </option>
@@ -250,8 +255,18 @@ let showBoitier = true // Variable pour contrôler la visibilité des boitier
 
 const toggleBoitierRond = () => {
   showBoitier = !showBoitier // Inverser la visibilité du boitier
-  boitierRond.visible = showBoitier // Mettre à jour la visibilité du boitierRond dans la scène
-  boitierCarre.visible = !showBoitier // Mettre à jour la visibilité du boitierCarre dans la scène
+  if (showBoitier) {
+    // Si c'est le boîtier rond qui doit être affiché
+    boitierRond.visible = true
+    boitierCarre.visible = false
+
+    // Mettre à jour la texture pour le boîtier rond
+    changeTextureBoitierRond(currentTextureBoitierRond)
+  } else {
+    // Si c'est le boîtier carré qui doit être affiché
+    boitierRond.visible = false
+    boitierCarre.visible = true
+  }
 }
 
 const changePierreColor = (type) => {
@@ -302,11 +317,15 @@ const changeTexture = (texture) => {
 }
 const changeTextureBoitierRond = (textureBoitierRond) => {
   currentTextureBoitierRond = textureBoitierRond
-  // Charger la nouvelle texture et l'appliquer au matériau du boitier
+
+  // Charger la nouvelle texture et l'appliquer au matériau du boîtier rond
   const textureLoader = new TextureLoader()
   const newTexture = textureLoader.load(`images/${textureBoitierRond}`)
   boitierRond.material[1].map = newTexture
   boitierRond.material[1].needsUpdate = true
+  boitierCarre.material[1].map = newTexture
+  boitierCarre.material[1].needsUpdate = true
+  console.log(boitierCarre)
 }
 
 function onLoaded(collada) {
@@ -343,7 +362,7 @@ function onLoaded(collada) {
   boitierCarre = objects.getObjectByName('boitier_carre')
   const textureBoitierCarre = textureLoaderBoitierRond.load(`/images/${currentTextureBoitierRond}`)
   boitierCarre.material[0] = new THREE.MeshBasicMaterial({ color: 0x777777 })
-  boitierRond.material[1] = new THREE.MeshBasicMaterial({
+  boitierCarre.material[1] = new THREE.MeshBasicMaterial({
     map: textureBoitierCarre
   })
   boitierCarre.visible = false
