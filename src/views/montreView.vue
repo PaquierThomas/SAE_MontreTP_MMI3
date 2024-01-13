@@ -1,38 +1,68 @@
-<template>
+<template class="bg">
   <Header />
-  <div class="container">
-    <h2 class="title">Liste de vos montres</h2>
-    <img class="image" src="/image/montre.webp" alt="image montre fond" />
-  </div>
-
-  <div>
-    <h2 class="title2">Consultez vos créations</h2>
-    <div class="montres-grid">
-      <div v-for="montre in montres" :key="montre.config_id" class="montre">
-        <p>ID: {{ montre.config_id }}</p>
-        <h2>Nom: {{ montre.watch_name }}</h2>
-        <p>Prix: {{ montre.price }}</p>
-        <p>Boîtier: {{ montre.case_name }}</p>
-        <p>Cadran: {{ montre.dial_name }}</p>
-        <p>Pierres: {{ montre.stones_name }}</p>
-        <p>Bracelet: {{ montre.bracelet_name }}</p>
-        <p>Prix métal: {{ montre.metal_price }}</p>
-        <p>Prix cuir: {{ montre.leather_price }}</p>
-        <p>Prix tissu: {{ montre.fabric_price }}</p>
-        <button @click="viewMontreDetails(montre.config_id)">Voir détails</button>
-        <button @click="ajouterAuPanier(montre.config_id)">Ajouter au Panier</button>
+  <div class="bg">
+    <div class="container">
+      <h2 class="title">Liste de vos montres</h2>
+      <img class="image" src="/image/montre.webp" alt="image montre fond" />
+    </div>
+    <div>
+      <h2 class="title2">Consultez vos créations</h2>
+      <div class="montres-grid">
+        <div v-for="montre in montres" :key="montre.config_id" class="montre">
+          <!-- <p>ID: {{ montre.config_id }}</p> -->
+          <div>
+            <p>Nom de la montre:</p>
+            <p>{{ montre.watch_name }}</p>
+          </div>
+          <div>
+            <p>Prix:</p>
+            <p>{{ montre.price }} €</p>
+          </div>
+          <div>
+            <p>Boîtier:</p>
+            <p>{{ montre.case_name }}</p>
+          </div>
+          <div>
+            <p>Cadran:</p>
+            <p>{{ montre.dial_name }}</p>
+          </div>
+          <div>
+            <p>Pierres:</p>
+            <p>{{ montre.stones_name }}</p>
+          </div>
+          <div>
+            <p>Bracelet:</p>
+            <p>{{ montre.bracelet_name }}</p>
+          </div>
+          <!-- <div>
+            <p>Prix métal:</p>
+            <p>{{ montre.metal_price }}</p>
+          </div>
+          <div>
+            <p>Prix cuir:</p>
+            <p>{{ montre.leather_price }}</p>
+          </div>
+          <div>
+            <p>Prix tissu:</p>
+            <p>{{ montre.fabric_price }}</p>
+          </div> -->
+          <div class="buttons-container">
+            <button @click="ajouterAuPanier(montre.config_id)">Ajouter au Panier</button>
+            <button @click="viewMontreDetails(montre.config_id)">Voir détails</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="grid-container">
+      <p class="custom-message">
+        Vous ne trouvez pas de montre? <span class="highlight-text">Customisez</span> la vôtre!
+      </p>
+      <div class="custom-button">
+        <a href="/add-watch"><span class="button-text">Customiser</span></a>
       </div>
     </div>
   </div>
-  <div class="grid-container">
-    <p class="custom-message">
-      Vous ne trouvez pas de montre? <span class="highlight-text">Customisez</span> la vôtre!
-    </p>
-    <div class="custom-button">
-      <a href="/add-watch"><span class="button-text">Customiser</span></a>
-    </div>
-  </div>
-  <Footer />
+  <Footer class="footer" />
 </template>
 
 <script setup>
@@ -107,23 +137,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color-primary: white;
+$color-secondary: black;
+
+.footer {
+  margin: 0;
+}
+.bg {
+  background: #000000;
+  border-bottom: 2px solid $color-primary;
+  padding-bottom: 20px;
+}
 .montres-grid {
   display: grid;
   margin: 0 2rem;
 
   grid-template-columns: repeat(
     auto-fill,
-    minmax(300px, 1fr)
+    minmax(350px, 1fr)
   ); /* Définir la largeur minimale et maximale des colonnes */
   gap: 20px; /* Espacement entre les éléments de la grille */
 }
 
 /* Styles CSS pour la liste des montres */
-.montre {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-}
 
 .container {
   position: relative;
@@ -138,7 +174,7 @@ export default {
   font-size: 2.25rem;
   line-height: 2.5rem;
   font-weight: 700;
-  color: #ffffff;
+  color: $color-primary;
   font-family: $primary-font-family;
 }
 
@@ -171,6 +207,7 @@ export default {
   -webkit-box-orient: vertical;
   overflow: hidden;
   -webkit-line-clamp: 2;
+  color: $color-primary;
 }
 
 .highlight-text {
@@ -179,9 +216,10 @@ export default {
 
 .custom-button {
   position: relative;
-  background-color: #000; /* Couleur noir */
-  width: 16.66667%; /* 1/6 de la largeur parente */
-  height: 3.5rem; /* Hauteur fixe */
+  background-color: $color-primary;
+  width: 16.66667%;
+  height: 3.5rem;
+  margin-bottom: 20px;
   border-radius: 10px;
   a {
     text-decoration: none;
@@ -196,6 +234,80 @@ export default {
   align-items: center;
   font-size: 1.5rem;
   font-weight: bold;
-  color: #fff;
+  font-family: $primary-font-family;
+  text-transform: uppercase;
+  color: $color-secondary;
+}
+
+.montre {
+  border: 4px solid $color-primary;
+  padding: 20px;
+  margin-bottom: 10px;
+  div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-family: $primary-font-family;
+    margin-bottom: 5px;
+  }
+  p:first-child {
+    color: $color-primary;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding-right: 10px;
+    // width: 200px;
+    // box-sizing: border-box;
+  }
+  p:last-child {
+    color: $color-primary;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: right;
+    text-transform: capitalize;
+
+    // width: 200px;
+    // box-sizing: border-box;
+  }
+  .buttons-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
+  button {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    margin: 0;
+  }
+  button:last-child {
+    background-color: $color-primary;
+    color: $color-secondary;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 11px;
+    box-sizing: border-box;
+  }
+  button:last-child:hover {
+    color: orange;
+  }
+  button:first-child {
+    background-color: $color-secondary;
+    color: $color-primary;
+    border: 2px solid $color-primary;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  button:first-child:hover {
+    background-color: $color-primary;
+    color: $color-secondary;
+  }
 }
 </style>

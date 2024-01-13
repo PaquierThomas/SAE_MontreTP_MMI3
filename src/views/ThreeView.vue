@@ -5,37 +5,47 @@
       <Header />
     </div>
     <div class="form">
-      <h2>Ajouter une montre</h2>
-      <form @submit.prevent="addWatch">
+      <h2>Modifier votre montre</h2>
+      <form @submit.prevent="updateMontreConfig">
         <div>
-          <label for="userId">ID Utilisateur:</label>
-          <p>{{ token }}</p>
+          <label for="userId">ID de la montre:</label>
+          <p>{{ configId }}</p>
         </div>
         <div>
           <label for="watchName">Nom de la montre:</label>
           <input
-            v-model="newWatch.watchName"
+            v-model="updatedConfig.watchName"
             type="text"
             id="watchName"
             name="watchName"
-            placeholder="Nommer votre création"
+            placeholder="Nom de la montre"
           />
         </div>
         <div>
           <label for="caseId">Boîtier:</label>
-          <select v-model="newWatch.caseId" id="caseId" name="caseId">
+          <select v-model="updatedConfig.caseId" id="caseId" name="caseId">
             <option value="" disabled selected hidden>Choisissez un boîtier</option>
-            <option value="1" @click="toggleBoitierRond">Rond</option>
-            <option value="2" @click="toggleBoitierRond">Carré</option>
+            <option
+              v-for="option in caseOptions"
+              :key="option.id"
+              :value="option.id"
+              @click="toggleBoitierRond"
+            >
+              {{ option.label }}
+            </option>
           </select>
         </div>
         <div>
           <label for="dialId">Cadran:</label>
           <select
-            v-model="newWatch.dialId"
+            v-model="updatedConfig.dialId"
             id="dialId"
             name="dialId"
-            @change="changeTextureBoitierRond(newWatch.dialId)"
+            @change="
+              changeTextureBoitierRond(
+                dialOptions.find((option) => option.id == updatedConfig.dialId).texture
+              )
+            "
           >
             <option value="" disabled selected hidden>Choisissez un Cadran</option>
             <option v-for="option in dialOptions" :key="option.id" :value="option.id">
@@ -45,39 +55,36 @@
         </div>
         <div>
           <label for="stonesId">Pierres précieuses:</label>
-          <select v-model="newWatch.stonesId" id="stonesId" name="stonesId">
+          <select v-model="updatedConfig.stonesId" id="stonesId" name="stonesId">
             <option value="" disabled selected hidden>Choisissez une pierre précieuse</option>
-            <option value="1" @click="changePierreColor('rubis')">Rubis</option>
-            <option value="2" @click="changePierreColor('diamant')">Diamant</option>
-            <option value="3" @click="changePierreColor('émeraude')">Emeraude</option>
-            <option value="4" @click="changePierreColor('topaze')">Topaze</option>
-            <option value="5" @click="changePierreColor('saphir')">Saphir</option>
+            <option
+              v-for="option in stoneOptions"
+              :key="option.id"
+              :value="option.id"
+              @click="changePierreColor(option.color)"
+            >
+              {{ option.label }}
+            </option>
           </select>
         </div>
 
         <div>
           <label for="braceletId">Bracelet:</label>
-          <select v-model="newWatch.braceletId" id="braceletId" name="braceletId">
+          <select v-model="updatedConfig.braceletId" id="braceletId" name="braceletId">
             <option value="" disabled selected hidden>Choisissez un bracelet</option>
-            <option value="1" @click="changeTexture('texture-tissus-marron.jpg')">
-              Tissu marron
+            <option
+              v-for="option in braceletOptions"
+              :key="option.id"
+              :value="option.id"
+              @click="changeTexture(option.texture)"
+            >
+              {{ option.label }}
             </option>
-            <option value="2" @click="changeTexture('texture-tissus-or.jpg')">Tissu Or</option>
-            <option value="3" @click="changeTexture('texture-cuir-blanc.jpg')">Cuir</option>
           </select>
         </div>
-        <div>
-          <label for="price">Prix:</label>
-          <input
-            v-model="newWatch.price"
-            type="text"
-            id="price"
-            name="price"
-            placeholder="Indiquer un prix"
-          />
-        </div>
 
-        <input type="submit" value="Ajouter la montre" />
+        <button type="submit" class="submit-btn">Enregistrer</button>
+        <button @click="deleteMontre" class="submit-btn">Supprimer cette montre</button>
       </form>
     </div>
   </div>
@@ -89,15 +96,13 @@ export default {
   data() {
     return {
       token: localStorage.getItem('token'), // Récupérer le token une seule fois
-      montres: [],
-      newWatch: {
-        userId: '',
+      montreDetails: null,
+      updatedConfig: {
         watchName: '',
         caseId: '',
         dialId: '',
         stonesId: '',
-        braceletId: '',
-        price: ''
+        braceletId: ''
       },
       dialOptions: [
         { id: 1, label: 'Classic Black', texture: 'background_black01.png' },
@@ -108,58 +113,62 @@ export default {
         { id: 6, label: 'Clock', texture: 'background_white02.png' },
         { id: 7, label: 'Classic', texture: 'background_white03.png' },
         { id: 8, label: 'Timeless', texture: 'background_white05.png' }
+      ],
+      stoneOptions: [
+        { id: 1, label: 'Rubis', color: 'rubis' },
+        { id: 2, label: 'Diamant', color: 'diamant' },
+        { id: 3, label: 'Emeraude', color: 'émeraude' },
+        { id: 4, label: 'Topaze', color: 'topaze' },
+        { id: 5, label: 'Saphir', color: 'saphir' }
+      ],
+      braceletOptions: [
+        { id: 1, label: 'Tissu marron', texture: 'texture-tissus-marron.jpg' },
+        { id: 2, label: 'Tissu Or', texture: 'texture-tissus-or.jpg' },
+        { id: 3, label: 'Cuir', texture: 'texture-cuir-blanc.jpg' }
+      ],
+      caseOptions: [
+        { id: 1, label: 'Rond', handler: 'toggleBoitierRond' },
+        { id: 2, label: 'Carré', handler: 'toggleBoitierRond' }
       ]
     }
   },
   created() {
-    this.getAllMontres()
+    const configId = this.$route.params.configId
+    this.getMontreDetails(configId)
   },
   methods: {
-    async getAllMontres() {
+    async getMontreDetails(configId) {
       try {
-        const response = await axios.get('http://localhost:4000/montres')
-        this.montres = response.data.montres || []
-
-        // Supposons que vous récupérez directement l'ID de dial depuis la base de données
-        // Remplacez ceci par la manière dont vous récupérez réellement l'ID
-        const dialIdFromDatabase = this.montres[0].dial_id
-
-        // Mettez à jour le modèle avec l'ID récupéré
-        this.newWatch.dialId = dialIdFromDatabase
+        const response = await axios.get(`http://localhost:4000/montres/${configId}`)
+        this.montreDetails = response.data
       } catch (error) {
-        console.error('Erreur lors de la récupération des montres:', error)
+        console.error('Erreur lors de la récupération des détails de la montre:', error)
       }
     },
-
-    async addWatch() {
-      // Afficher le token dans la console
-      console.log(this.token)
-
-      // Vérifier si l'utilisateur est connecté
-      if (!this.token) {
-        // Rediriger l'utilisateur vers la page de connexion
-        this.$router.push('/connexion')
-        return
-      }
-
-      // Assigner la valeur du token à userId
-      this.newWatch.userId = this.token
-
+    async updateMontreConfig() {
       try {
-        const response = await fetch('http://localhost:4000/add-watch', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(this.newWatch)
-        })
-
-        const data = await response.json()
-        console.log(data)
-        alert('Montre ajoutée avec succès!')
+        const configId = this.$route.params.configId
+        const response = await axios.put(
+          `http://localhost:4000/montres/${configId}`,
+          this.updatedConfig
+        )
+        console.log(response.data) // Affiche la réponse du serveur après la mise à jour
+        // Tu peux rediriger l'utilisateur ou faire d'autres actions après la mise à jour réussie
       } catch (error) {
-        console.error('Error adding watch:', error)
-        alert("Erreur lors de l'ajout de la montre.")
+        console.error('Erreur lors de la mise à jour de la configuration de la montre:', error)
+      }
+    },
+    async deleteMontre() {
+      try {
+        const configId = this.$route.params.configId
+        const response = await axios.delete(`http://localhost:4000/montres/${configId}`)
+        console.log(response.data) // Réponse du serveur après la suppression
+
+        // Rediriger l'utilisateur ou effectuer d'autres actions après la suppression réussie
+        this.$router.push('/montres')
+      } catch (error) {
+        console.error('Erreur lors de la suppression de la montre:', error)
+        // Gérer l'erreur, afficher un message à l'utilisateur, etc.
       }
     }
   }
@@ -504,6 +513,19 @@ onBeforeUnmount(() => {
   cancelAnimationFrame(animationId)
 })
 </script>
+
+<!-- ⣿⣷⡶⠚⠉⢀⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠠⣴⣿⣿⣿⣿⣶⣤⣤⣤
+⠿⠥⢶⡏⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⢀⣴⣷⣌⢿⣿⣿⣿⣿⣿⣿⣿
+⣍⡛⢷⣠⣿⣿⣿⣿⣿⣟⠻⣯⠽⣿⣿⠟⠁⣠⠿⠿⣿⣿⣎⠻⣿⣿⣿⡿⠟⣿
+⣿⣿⣦⠙⣿⣿⣿⣿⣿⣿⣷⣏⡧⠙⠁⣀⢾⣧    ⠈⣿⡟  ⠙⣫⣵⣶⠇⣋
+⣿⣿⣿⢀⣿⣿⣿⣿⣿⣿⣿⠟⠃⢀⣀⢻⣎⢻⣷⣤⣴⠟  ⣠⣾⣿⢟⣵⡆⢿
+⣿⣯⣄⢘⢻⣿⣿⣿⣿⡟⠁⢀⣤⡙⢿⣴⣿⣷⡉⠉⢀  ⣴⣿⡿⣡⣿⣿⡿⢆
+⠿⣿⣧⣤⡘⢿⣿⣿⠏  ⡔⠉⠉⢻⣦⠻⣿⣿⣶⣾⡟⣼⣿⣿⣱⣿⡿⢫⣾⣿
+⣷⣮⣝⣛⣃⡉⣿⡏  ⣾⣧⡀    ⣿⡇⢘⣿⠋    ⠻⣿⣿⣿⢟⣵⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣌⢧⣴⣘⢿⣿⣶⣾⡿⠁⢠⠿⠁⠜    ⣿⣿⣿⣿⡿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣦⡙⣿⣷⣉⡛⠋    ⣰⣾⣦⣤⣤⣤⣿⢿⠟⢋⣴⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣌⢿⣿⣿⣿⣿⢰⡿⣻⣿⣿⣿⣿⣿⢃⣰⣫⣾⣿⣿⣿
+⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠿⠿⠿⠛⢰⣾⡿⢟⣭⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ -->
 
 <style lang="scss" scoped>
 .canvas-container {
