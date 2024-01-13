@@ -1,75 +1,95 @@
 <template>
-  <div>
+  <div class="canvas-container">
     <canvas ref="canvas" />
-    <h2>Ajouter une montre</h2>
-    <form @submit.prevent="addWatch">
-      <label for="userId">ID Utilisateur:</label>
-      <h2>{{ token }}</h2>
+    <div class="header">
+      <Header />
+    </div>
+    <div class="form">
+      <h2>Ajouter une montre</h2>
+      <form @submit.prevent="addWatch">
+        <div>
+          <label for="userId">ID Utilisateur:</label>
+          <p>{{ token }}</p>
+        </div>
+        <div>
+          <label for="watchName">Nom de la montre:</label>
+          <input
+            v-model="newWatch.watchName"
+            type="text"
+            id="watchName"
+            name="watchName"
+            placeholder="Nommer votre création"
+          />
+        </div>
+        <div>
+          <label for="caseId">Boîtier:</label>
+          <select v-model="newWatch.caseId" id="caseId" name="caseId">
+            <option value="" disabled selected hidden>Choisissez un boîtier</option>
+            <option value="1" @click="toggleBoitierRond">Rond</option>
+            <option value="2" @click="toggleBoitierRond">Carré</option>
+          </select>
+        </div>
+        <div>
+          <label for="dialId">Cadran:</label>
+          <select
+            v-model="newWatch.dialId"
+            id="dialId"
+            name="dialId"
+            @change="changeTextureBoitierRond(newWatch.dialId)"
+          >
+            <option value="" disabled selected hidden>Choisissez un Cadran</option>
+            <option v-for="option in dialOptions" :key="option.id" :value="option.id">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+        <div>
+          <label for="stonesId">Pierres précieuses:</label>
+          <select v-model="newWatch.stonesId" id="stonesId" name="stonesId">
+            <option value="" disabled selected hidden>Choisissez une pierre précieuse</option>
+            <option value="1" @click="changePierreColor('rubis')">Rubis</option>
+            <option value="2" @click="changePierreColor('diamant')">Diamant</option>
+            <option value="3" @click="changePierreColor('émeraude')">Emeraude</option>
+            <option value="4" @click="changePierreColor('topaze')">Topaze</option>
+            <option value="5" @click="changePierreColor('saphir')">Saphir</option>
+          </select>
+        </div>
 
-      <label for="watchName">Nom de la montre:</label>
-      <input v-model="newWatch.watchName" type="text" id="watchName" name="watchName" /><br /><br />
+        <div>
+          <label for="braceletId">Bracelet:</label>
+          <select v-model="newWatch.braceletId" id="braceletId" name="braceletId">
+            <option value="" disabled selected hidden>Choisissez un bracelet</option>
+            <option value="1" @click="changeTexture('texture-tissus-marron.jpg')">
+              Tissu marron
+            </option>
+            <option value="2" @click="changeTexture('texture-tissus-or.jpg')">Tissu Or</option>
+            <option value="3" @click="changeTexture('texture-cuir-blanc.jpg')">Cuir</option>
+          </select>
+        </div>
+        <div>
+          <label for="price">Prix:</label>
+          <input
+            v-model="newWatch.price"
+            type="text"
+            id="price"
+            name="price"
+            placeholder="Indiquer un prix"
+          />
+        </div>
 
-      <label for="caseId">Boîtier:</label>
-      <select v-model="newWatch.caseId" id="caseId" name="caseId">
-        <option value="" disabled selected hidden>Choisissez un boîtier</option>
-        <option value="1" @click="toggleBoitierRond">Rond</option>
-        <option value="2" @click="toggleBoitierRond">Carré</option></select
-      ><br /><br />
-
-      <label for="dialId">Cadran:</label>
-      <select
-        v-model="newWatch.dialId"
-        id="dialId"
-        name="dialId"
-        @change="changeTextureBoitierRond"
-      >
-        <option value="1" @click="changeTextureBoitierRond('background_black01.png')">
-          Classic Black
-        </option>
-        <option value="2" @click="changeTextureBoitierRond('background_black02.png')">
-          Hourless Black
-        </option>
-        <option value="3" @click="changeTextureBoitierRond('background_fluo01.png')">Fluo</option>
-        <option value="4" @click="changeTextureBoitierRond('background_mickey.png')">Mickey</option>
-        <option value="5" @click="changeTextureBoitierRond('background_white01.png')">Neon</option>
-        <option value="6" @click="changeTextureBoitierRond('background_white02.png')">Clock</option>
-        <option value="7" @click="changeTextureBoitierRond('background_white03.png')">
-          Classic
-        </option>
-        <option value="8" @click="changeTextureBoitierRond('background_white05.png')">
-          Timeless
-        </option></select
-      ><br /><br />
-
-      <label for="stonesId">Pierres précieuses:</label>
-      <select v-model="newWatch.stonesId" id="stonesId" name="stonesId">
-        <option value="1" @click="changePierreColor('rubis')">Rubis</option>
-        <option value="2" @click="changePierreColor('diamant')">Diamant</option>
-        <option value="3" @click="changePierreColor('émeraude')">Emeraude</option>
-        <option value="4" @click="changePierreColor('topaze')">Topaze</option>
-        <option value="5" @click="changePierreColor('saphir')">Saphir</option></select
-      ><br /><br />
-
-      <label for="braceletId">Bracelet:</label>
-      <select v-model="newWatch.braceletId" id="braceletId" name="braceletId">
-        <option value="1" @click="changeTexture('texture-tissus-marron.jpg')">Tissu marron</option>
-        <option value="2" @click="changeTexture('texture-tissus-or.jpg')">Tissu Or</option>
-        <option value="3" @click="changeTexture('texture-cuir-blanc.jpg')">Cuir</option></select
-      ><br /><br />
-
-      <label for="price">Prix:</label>
-      <input v-model="newWatch.price" type="text" id="price" name="price" /><br /><br />
-
-      <input type="submit" value="Ajouter la montre" />
-    </form>
+        <input type="submit" value="Ajouter la montre" />
+      </form>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
       token: localStorage.getItem('token'), // Récupérer le token une seule fois
+      montres: [],
       newWatch: {
         userId: '',
         watchName: '',
@@ -78,10 +98,39 @@ export default {
         stonesId: '',
         braceletId: '',
         price: ''
-      }
+      },
+      dialOptions: [
+        { id: 1, label: 'Classic Black', texture: 'background_black01.png' },
+        { id: 2, label: 'Hourless Black', texture: 'background_black02.png' },
+        { id: 3, label: 'Fluo', texture: 'background_fluo01.png' },
+        { id: 4, label: 'Mickey', texture: 'background_mickey.png' },
+        { id: 5, label: 'Neon', texture: 'background_white01.png' },
+        { id: 6, label: 'Clock', texture: 'background_white02.png' },
+        { id: 7, label: 'Classic', texture: 'background_white03.png' },
+        { id: 8, label: 'Timeless', texture: 'background_white05.png' }
+      ]
     }
   },
+  created() {
+    this.getAllMontres()
+  },
   methods: {
+    async getAllMontres() {
+      try {
+        const response = await axios.get('http://localhost:4000/montres')
+        this.montres = response.data.montres || []
+
+        // Supposons que vous récupérez directement l'ID de dial depuis la base de données
+        // Remplacez ceci par la manière dont vous récupérez réellement l'ID
+        const dialIdFromDatabase = this.montres[0].dial_id
+
+        // Mettez à jour le modèle avec l'ID récupéré
+        this.newWatch.dialId = dialIdFromDatabase
+      } catch (error) {
+        console.error('Erreur lors de la récupération des montres:', error)
+      }
+    },
+
     async addWatch() {
       // Afficher le token dans la console
       console.log(this.token)
@@ -123,6 +172,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader.js'
 import * as THREE from 'three'
 import { TextureLoader } from 'three/src/loaders/TextureLoader.js'
+import Header from '@/components/Header.vue'
 
 var clickInfo = []
 var animations = []
@@ -417,10 +467,19 @@ function onLoaded(collada) {
     iFermoir
   )
 
-  controls.target.set(0, 0, 0)
-  camera.position.set(200, 350, 350)
-  camera.lookAt(new THREE.Vector3(0, 0, 5))
+  // Ajustez la position de l'objet de la montre
+  const xOffset = 25 // Décalage X
+  const zOffset = -35 // Décalage Z
+  objects.position.x = xOffset
+  objects.position.z = zOffset
+
+  // objects.rotation.set(0, Math.PI, 0)
+
+  controls.target.set(xOffset, zOffset, 10)
+  camera.position.set(-120, -350, 300)
+  camera.lookAt(new THREE.Vector3(xOffset, 0, 5))
   camera.up.set(0, 0, 1)
+  camera.rotation.set(10, Math.PI, 0)
   controls.update()
   scene.add(camera)
 }
@@ -446,11 +505,102 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.canvas-container {
+  position: relative;
+}
+
 .canvas {
-  width: 100vw;
+  width: 100%;
   height: 100%;
+  z-index: -1;
+}
+.header {
+  position: fixed; /* ou position: absolute; en fonction de vos besoins */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+p {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+h2 {
+  color: white;
+  text-align: center;
+  margin-bottom: 30px;
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.form {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translate(-5%, -50%);
+  border: 3px solid white;
+  font-family: $primary-font-family;
+  /* stroke de couleur blanche de 2 px et solide (pas de pointillés) */
+
+  z-index: 10;
+  padding: 20px;
+
+  div {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  label {
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding-right: 10px;
+    width: 200px; // Ajout d'une largeur fixe pour les étiquettes
+    box-sizing: border-box;
+  }
+
+  input[type='text'] {
+    background-color: white;
+    color: black;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px 20px;
+    width: 260px;
+    border: none;
+    display: block;
+  }
+
+  select {
+    background-color: white;
+    color: black;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 5px 20px;
+    width: 300px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    display: block;
+  }
+
+  input[type='submit'] {
+    background-color: white;
+    color: black;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 10px 200px;
+    border: none;
+    cursor: pointer;
+    margin: 0 auto;
+    display: block;
+  }
 }
 </style>
-
-<script setup></script>
