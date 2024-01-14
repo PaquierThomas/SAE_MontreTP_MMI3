@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 const token = localStorage.getItem('token')
 
 export default {
@@ -31,18 +32,16 @@ export default {
     }
   },
   mounted() {
+    // Récupérer l'ID de l'utilisateur à partir de l'URL
+    const userId = this.$route.params.userId
+
     // Appeler la nouvelle API pour récupérer le panier de l'utilisateur connecté lors du chargement du composant
-    this.fetchPanier()
+    this.fetchPanier(userId)
   },
   methods: {
-    viewPanier(id) {
-      // Redirection vers le panier de l'utilisateur avec l'ID spécifique
-      console.log('Id du panier', id)
-      this.$router.push({ name: 'Panier', params: { userId: id } })
-    },
-    async fetchPanier() {
+    async fetchPanier(userId) {
       try {
-        const response = await fetch('http://localhost:4000/api/panier', {
+        const response = await fetch(`http://localhost:4000/api/panier/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
