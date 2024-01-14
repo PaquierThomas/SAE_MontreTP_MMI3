@@ -19,7 +19,7 @@
             </li>
             <li>
               <a v-if="!estConnecte" href="/connexion" class="menu-link">Se connecter</a>
-              <a v-if="estConnecte" href="/panier" class="menu-link">Mon panier</a>
+              <p v-if="estConnecte" @click="viewPanier" class="menu-link">Mon panier</p>
             </li>
           </ul>
         </div>
@@ -30,10 +30,18 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const token = localStorage.getItem('token')
-
 const estConnecte = ref(!!token)
+const $router = useRouter()
+
+const viewPanier = () => {
+  // Redirection vers le panier de l'utilisateur avec l'ID spécifique
+  console.log('Id du panier', token)
+  // Utilisez la référence directe au routeur
+  $router.push({ name: 'panier', params: { userId: token } })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -96,5 +104,6 @@ const estConnecte = ref(!!token)
 }
 .menu-link:hover {
   color: #dd6b20;
+  cursor: pointer;
 }
 </style>

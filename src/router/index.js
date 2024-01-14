@@ -50,7 +50,7 @@ const router = createRouter({
       beforeEnter: authGuard
     },
     {
-      path: '/panier',
+      path: '/panier/:userId',
       name: 'panier',
       component: () => import('../views/PanierView.vue'),
       meta: { requiresAuth: true },
