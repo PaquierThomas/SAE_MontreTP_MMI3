@@ -18,7 +18,8 @@
               <a href="/montres" class="menu-link">Montres</a>
             </li>
             <li>
-              <a href="/connexion" class="menu-link">Se connecter</a>
+              <a v-if="!estConnecte" href="/connexion" class="menu-link">Se connecter</a>
+              <a v-if="estConnecte" href="/panier" class="menu-link">Mon panier</a>
             </li>
           </ul>
         </div>
@@ -26,6 +27,14 @@
     </nav>
   </header>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+
+const token = localStorage.getItem('token')
+
+const estConnecte = ref(!!token)
+</script>
 
 <style lang="scss" scoped>
 .header-nav {

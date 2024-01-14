@@ -2,7 +2,7 @@
   <div>
     <h1>Liste du Panier</h1>
 
-    <ul v-if="panier.length > 0">
+    <!-- <ul v-if="panier.length > 0">
       <li v-for="article in panier" :key="article.PanierID">
         <p><strong>Nom Montre:</strong> {{ article.NomMontre }}</p>
         <p><strong>Nom Boitier:</strong> {{ article.NomBoitier }}</p>
@@ -13,7 +13,7 @@
       </li>
     </ul>
 
-    <p v-else>Aucun article dans le panier.</p>
+    <p v-else>Aucun article dans le panier.</p> -->
   </div>
 </template>
 
