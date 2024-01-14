@@ -9,21 +9,21 @@
       <form @submit.prevent="updateMontreConfig">
         <div>
           <label for="userId">ID de la montre:</label>
-          <p>{{ configId }}</p>
+          <p>{{ config_id }}</p>
         </div>
         <div>
-          <label for="watchName">Nom de la montre:</label>
+          <label for="watch_name">Nom de la montre:</label>
           <input
             v-model="updatedConfig.watch_name"
             type="text"
-            id="watchName"
-            name="watchName"
+            id="watch_name"
+            name="watch_name"
             placeholder="Nom de la montre"
           />
         </div>
         <div>
-          <label for="caseId">Boîtier:</label>
-          <select v-model="updatedConfig.case_id" id="caseId" name="caseId">
+          <label for="case_id">Boîtier:</label>
+          <select v-model="updatedConfig.case_id" id="case_id" name="case_id">
             <option value="" disabled selected hidden>Choisissez un boîtier</option>
             <option
               v-for="option in caseOptions"
@@ -36,11 +36,11 @@
           </select>
         </div>
         <div>
-          <label for="dialId">Cadran:</label>
+          <label for="dial_id">Cadran:</label>
           <select
             v-model="updatedConfig.dial_id"
-            id="dialId"
-            name="dialId"
+            id="dial_id"
+            name="dial_id"
             @change="
               changeTextureBoitierRond(
                 dialOptions.find((option) => option.id == updatedConfig.dial_id).texture
@@ -54,8 +54,8 @@
           </select>
         </div>
         <div>
-          <label for="stonesId">Pierres précieuses:</label>
-          <select v-model="updatedConfig.stones_id" id="stonesId" name="stonesId">
+          <label for="stones_id">Pierres précieuses:</label>
+          <select v-model="updatedConfig.stones_id" id="stones_id" name="stones_id">
             <option value="" disabled selected hidden>Choisissez une pierre précieuse</option>
             <option
               v-for="option in stoneOptions"
@@ -83,8 +83,10 @@
           </select>
         </div>
 
-        <button type="submit" class="submit-btn">Enregistrer</button>
-        <button @click="deleteMontre" class="submit-btn">Supprimer cette montre</button>
+        <div class="btn-container">
+          <button type="submit" class="submit-btn">Enregistrer</button>
+          <button @click="deleteMontre" class="submit-btn">Supprimer</button>
+        </div>
       </form>
     </div>
   </div>
@@ -141,6 +143,7 @@ export default {
       try {
         const response = await axios.get(`http://localhost:4000/montres/${configId}`)
         this.montreDetails = response.data
+        console.log('test', this.montreDetails)
       } catch (error) {
         console.error('Erreur lors de la récupération des détails de la montre:', error)
       }
@@ -358,6 +361,8 @@ const handleColorChange = (event) => {
   const newColor = event.target.value
   changeFermoirColor(newColor)
 }
+
+// Changer la couleur du fermoir, je ne le fais pas dans la DB mais c'est
 const changeFermoirColor = (color) => {
   // Convertir la couleur hexadécimale en décimal
   const decimalColor = parseInt(color.slice(1), 16)
@@ -613,16 +618,28 @@ h2 {
     display: block;
   }
 
-  input[type='submit'] {
-    background-color: white;
-    color: black;
-    text-transform: uppercase;
-    font-weight: bold;
-    padding: 10px 200px;
-    border: none;
-    cursor: pointer;
-    margin: 0 auto;
-    display: block;
+  .btn-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    width: 100%; /* Prend toute la largeur disponible */
+
+    button {
+      background-color: #00a86b;
+      color: white;
+      text-transform: uppercase;
+      font-weight: bold;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      width: 100%; /* Prend toute la largeur disponible */
+
+      &:last-child {
+        background-color: #8b0000;
+        color: white;
+      }
+    }
   }
 }
 </style>
