@@ -14,7 +14,7 @@
         <div>
           <label for="watchName">Nom de la montre:</label>
           <input
-            v-model="updatedConfig.watchName"
+            v-model="updatedConfig.watch_name"
             type="text"
             id="watchName"
             name="watchName"
@@ -23,7 +23,7 @@
         </div>
         <div>
           <label for="caseId">Boîtier:</label>
-          <select v-model="updatedConfig.caseId" id="caseId" name="caseId">
+          <select v-model="updatedConfig.case_id" id="caseId" name="caseId">
             <option value="" disabled selected hidden>Choisissez un boîtier</option>
             <option
               v-for="option in caseOptions"
@@ -38,12 +38,12 @@
         <div>
           <label for="dialId">Cadran:</label>
           <select
-            v-model="updatedConfig.dialId"
+            v-model="updatedConfig.dial_id"
             id="dialId"
             name="dialId"
             @change="
               changeTextureBoitierRond(
-                dialOptions.find((option) => option.id == updatedConfig.dialId).texture
+                dialOptions.find((option) => option.id == updatedConfig.dial_id).texture
               )
             "
           >
@@ -55,7 +55,7 @@
         </div>
         <div>
           <label for="stonesId">Pierres précieuses:</label>
-          <select v-model="updatedConfig.stonesId" id="stonesId" name="stonesId">
+          <select v-model="updatedConfig.stones_id" id="stonesId" name="stonesId">
             <option value="" disabled selected hidden>Choisissez une pierre précieuse</option>
             <option
               v-for="option in stoneOptions"
@@ -70,7 +70,7 @@
 
         <div>
           <label for="braceletId">Bracelet:</label>
-          <select v-model="updatedConfig.braceletId" id="braceletId" name="braceletId">
+          <select v-model="updatedConfig.bracelet_id" id="braceletId" name="braceletId">
             <option value="" disabled selected hidden>Choisissez un bracelet</option>
             <option
               v-for="option in braceletOptions"
@@ -98,11 +98,11 @@ export default {
       token: localStorage.getItem('token'), // Récupérer le token une seule fois
       montreDetails: null,
       updatedConfig: {
-        watchName: '',
-        caseId: '',
-        dialId: '',
-        stonesId: '',
-        braceletId: ''
+        watch_name: '',
+        case_id: '',
+        dial_id: '',
+        stones_id: '',
+        bracelet_id: ''
       },
       dialOptions: [
         { id: 1, label: 'Classic Black', texture: 'background_black01.png' },
@@ -370,7 +370,7 @@ const changeTexture = (texture) => {
   currentTexture = texture
   // Charger la nouvelle texture et l'appliquer au matériau du bracelet
   const textureLoader = new TextureLoader()
-  const newTexture = textureLoader.load(`images/${texture}`)
+  const newTexture = textureLoader.load(`/images/${texture}`)
   iBracelet.material.map = newTexture
   iBracelet.material.needsUpdate = true
 }
@@ -379,7 +379,7 @@ const changeTextureBoitierRond = (textureBoitierRond) => {
 
   // Charger la nouvelle texture et l'appliquer au matériau du boîtier rond
   const textureLoader = new TextureLoader()
-  const newTexture = textureLoader.load(`images/${textureBoitierRond}`)
+  const newTexture = textureLoader.load(`/images/${textureBoitierRond}`)
   boitierRond.material[1].map = newTexture
   boitierRond.material[1].needsUpdate = true
   boitierCarre.material[1].map = newTexture

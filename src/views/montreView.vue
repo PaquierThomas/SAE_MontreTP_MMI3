@@ -48,7 +48,7 @@
           </div> -->
           <div class="buttons-container">
             <button @click="ajouterAuPanier(montre.config_id)">Ajouter au Panier</button>
-            <button @click="viewMontreDetails(montre.config_id)">Voir détails</button>
+            <button @click="viewMontreDetails(montre.config_id)">Modifier</button>
           </div>
         </div>
       </div>
